@@ -149,9 +149,16 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         throw new NotImplementedException();
     }
 
-    public async Task<IActionResult> DeleteBook(string bookId)
+    public async Task<bool> DeleteBook(string bookId)
     {
-        throw new NotImplementedException();
+        if (bookId.Equals("1") || bookId.Equals("2"))
+            throw new ArgumentException("The first two books (id 1 and 2) are cannot be deleted.");
+        var ac = ctx.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+        if (ac.Result == null)
+            throw new KeyNotFoundException("Could not find the book with id: " + bookId + "");
+        ctx.Books.Remove(ac.Result);
+        var result = await ctx.SaveChangesAsync();
+        return result > 0;
     }
 
     public async Task<IActionResult> DeleteAuthor(string authorId)

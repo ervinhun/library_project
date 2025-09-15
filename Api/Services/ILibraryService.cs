@@ -25,7 +25,7 @@ public interface ILibraryService
     Task<AuthorDto> UpdateAuthor(string authorId, AuthorDto authorDto);
     Task<GenreDto> UpdateGenre(string genreId, GenreDto genreDto);
     
-    Task<IActionResult> DeleteBook(string bookId);
+    Task<bool> DeleteBook(string bookId);
     Task<IActionResult> DeleteAuthor(string authorId);
     Task<IActionResult> DeleteGenre(string genreId);
 }
