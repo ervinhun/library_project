@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
 
-public class GetterService(MyDbContext ctx) : IGetterService
+public class LibraryService(MyDbContext ctx) : ILibraryService
 {
     public async Task<BookDto> GetBookById(string bookId)
     {
@@ -81,17 +81,62 @@ public class GetterService(MyDbContext ctx) : IGetterService
         return genresDto;
     }
 
-    public Task<IActionResult> GetAllBooksByGenre(GenreDto genreId)
+    public async Task<List<BookDto>> GetAllBooksByGenre(string genreId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IActionResult> GetAllBooksByAuthor(AuthorDto authorId)
+    public async Task<List<BookDto>> GetAllBooksByTitle(string title)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IActionResult> GetAllBooksByTitle(string title)
+    public async Task<List<BookDto>> GetAllBooksByAuthor(string authorId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<BookDto> AddBook(BookDto bookDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<AuthorDto> AddAuthor(AuthorDto authorDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<GenreDto> AddGenre(GenreDto genreDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<BookDto> UpdateBook(string bookId, BookDto bookDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<AuthorDto> UpdateAuthor(string authorId, AuthorDto authorDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<GenreDto> UpdateGenre(string genreId, GenreDto genreDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IActionResult> DeleteBook(string bookId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IActionResult> DeleteAuthor(string authorId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IActionResult> DeleteGenre(string genreId)
     {
         throw new NotImplementedException();
     }

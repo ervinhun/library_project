@@ -10,7 +10,7 @@ builder.Services.AddOpenApiDocument(config =>
     config.Description = "Books with Genres, and Authors API for project.";
 });
 builder.Services.AddControllers();
-builder.Services.AddScoped<IGetterService, GetterService>();
+builder.Services.AddScoped<ILibraryService, LibraryService>();
 
 builder.Services.AddDbContext<MyDbContext>(options =>
 {
