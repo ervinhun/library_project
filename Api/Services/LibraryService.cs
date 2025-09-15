@@ -83,17 +83,40 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<List<BookDto>> GetAllBooksByGenre(string genreId)
     {
-        throw new NotImplementedException();
+        var books = await ctx.Books.Where(b => b.Genreid == genreId)
+            .Include(b => b.Genre)
+            .Include(b => b.Authors)
+            .ToListAsync();
+        if (books.Count == 0)
+            throw new KeyNotFoundException("Could not find any books");
+        var booksDto = books.Select(b => new BookDto(b)).ToList();
+        return booksDto;
+        
     }
 
     public async Task<List<BookDto>> GetAllBooksByTitle(string title)
     {
-        throw new NotImplementedException();
+        var books = await ctx.Books.Where(b => b.Title.Contains(title))
+            .Include(b => b.Genre)
+            .Include(b => b.Authors)
+            .ToListAsync();
+        if (books.Count == 0)
+            throw new KeyNotFoundException("Could not find any books");
+        var booksDto = books.Select(b => new BookDto(b)).ToList();
+        return booksDto;
     }
 
     public async Task<List<BookDto>> GetAllBooksByAuthor(string authorId)
     {
-        throw new NotImplementedException();
+        var books = await ctx.Books
+            .Where(b => b.Authors.Any(a => a.Id == authorId))
+            .Include(b => b.Genre)
+            .Include(b => b.Authors)
+            .ToListAsync();
+        if (books.Count == 0)
+            throw new KeyNotFoundException("Could not find any books");
+        var booksDto = books.Select(b => new BookDto(b)).ToList();
+        return booksDto;
     }
 
     public async Task<BookDto> AddBook(BookDto bookDto)

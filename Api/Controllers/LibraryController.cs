@@ -56,21 +56,21 @@ public class LibraryController : ControllerBase
     }
 
     [HttpGet(nameof(GetAllBooksByGenre))]
-    public ActionResult GetAllBooksByGenre(string genreId)
+    public async Task<ActionResult<List<BookDto>>> GetAllBooksByGenre(string genreId)
     {
-        return Ok();
+        return Ok(await _service.GetAllBooksByGenre(genreId));
     }
 
     [HttpGet(nameof(GetAllBooksByAuthor))]
-    public ActionResult<List<BookDto>> GetAllBooksByAuthor(string authorId)
+    public async Task<ActionResult<List<BookDto>>> GetAllBooksByAuthor(string authorId)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.GetAllBooksByAuthor(authorId));
     }
 
     [HttpGet(nameof(GetAllBooksByTitle))]
-    public ActionResult<List<BookDto>> GetAllBooksByTitle(string title)
+    public async Task<ActionResult<List<BookDto>>> GetAllBooksByTitle(string title)
     {
-        throw new NotImplementedException();
+        return Ok(await _service.GetAllBooksByTitle(title));
     }
 
     [HttpPost(nameof(AddBook))]
