@@ -169,7 +169,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         if (author == null)
             throw new KeyNotFoundException("Could not find the author with id: " + authorId + "");
         if (await CheckIfBookExistsWithAuthor(authorId))
-            throw new InvalidOperationException("Cannot delete author with id: " + authorId + " because there are books associated with it.");
+            throw new InvalidOperationException($"Cannot delete author with id: {authorId} because there are books associated with it.");
         ctx.Authors.Remove(author);
         var result = await ctx.SaveChangesAsync();
         if (result > 0)
