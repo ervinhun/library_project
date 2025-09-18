@@ -161,7 +161,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         return result > 0;
     }
 
-    public async Task<IActionResult> DeleteAuthor(string authorId)
+    public async Task<bool> DeleteAuthor(string authorId)
     {
         if (authorId.Equals("1") || authorId.Equals("2"))
             throw new ArgumentException(FirstTwoCannotBeDeleted("authors"));
@@ -172,12 +172,10 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             throw new InvalidOperationException($"Cannot delete author with id: {authorId} because there are books associated with it.");
         ctx.Authors.Remove(author);
         var result = await ctx.SaveChangesAsync();
-        if (result > 0)
-            return new OkResult();
-        return new BadRequestResult();
+        return result > 0;
     }
 
-    public async Task<IActionResult> DeleteGenre(string genreId)
+    public async Task<bool> DeleteGenre(string genreId)
     {
         if (genreId.Equals("1") || genreId.Equals("2"))
             throw new ArgumentException(FirstTwoCannotBeDeleted("genres"));
@@ -188,9 +186,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             throw new InvalidOperationException("Cannot delete genre with id: " + genreId + " because there are books associated with it.");
         ctx.Genres.Remove(genre);
         var result = await ctx.SaveChangesAsync();
-        if (result > 0)
-            return new OkResult();
-        return new BadRequestResult();
+        return result > 0;
     }
 
     private async Task<bool> CheckIfBookExistsWithGenre(string genreId)

@@ -123,8 +123,9 @@ public class LibraryController : ControllerBase
     }
 
     [HttpDelete(nameof(DeleteGenre))]
-    public ActionResult DeleteGenre(string genreId)
+    public async Task<ActionResult> DeleteGenre(string genreId)
     {
-        throw new NotImplementedException();
+        var result = await _service.DeleteGenre(genreId);
+        return result ? Ok() : BadRequest();
     }
 }
