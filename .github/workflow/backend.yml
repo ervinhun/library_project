@@ -54,4 +54,4 @@ jobs:
 
       # 8. Optional Docker build
       - name: Build Docker image
-        run: docker build -t my-backend-image ./
+        run: docker build -t my-backend-image .
