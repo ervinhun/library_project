@@ -31,18 +31,17 @@ jobs:
       # 5. Generate appsettings.json from GitHub Secret
       - name: Generate appsettings.json
         run: |
-          cat <<EOF > server/Api/appsettings.json
-          {
-            "Logging": {
-              "LogLevel": {
-                "Default": "Information",
-                "Microsoft.AspNetCore": "Warning"
+          echo "{
+            \"Logging\": {
+              \"LogLevel\": {
+                \"Default\": \"Information\",
+                \"Microsoft.AspNetCore\": \"Warning\"
               }
             },
-            "AllowedHosts": "*",
-            "Db": "${{ secrets.DB_CONNECTION_STRING }}"
-          }
-          EOF
+            \"AllowedHosts\": \"*\",
+            \"Db\": \"${{ secrets.DB_CONNECTION_STRING }}\"
+          }" > server/Api/appsettings.json
+
 
       # 6. Run tests
       - name: Run tests
@@ -53,5 +52,5 @@ jobs:
         run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
 
       # 8. Optional Docker build
-       - name: Build Docker image
-         run: docker build -t my-backend-image ./server
+      - name: Build Docker image
+        run: docker build -t my-backend-image ./server
