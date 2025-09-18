@@ -171,13 +171,13 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         throw new NotImplementedException();
     }
 
-    private int checkIfBookExistsWithGenre(string genreId)
+    private async Task<bool> checkIfBookExistsWithGenre(string genreId)
     {
-        throw new NotImplementedException();
+        return await ctx.Books.AnyAsync(b => b.Genre.Id == genreId);
     }
     
-    private int checkIfBookExistsWithAuthor(string authorId)
+    private async Task<bool> checkIfBookExistsWithAuthor(string authorId)
     {
-        throw new NotImplementedException();
+        return await ctx.Books.AnyAsync(b => b.Authors.Any(a => a.Id == authorId));
     }
 }
