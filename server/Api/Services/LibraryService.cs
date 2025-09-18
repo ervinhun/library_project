@@ -169,7 +169,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
     public async Task<IActionResult> DeleteGenre(string genreId)
     {
         if (genreId.Equals("1") || genreId.Equals("2"))
-            throw new ArgumentException("The first two genres (id 1 and 2) are cannot be deleted.");
+            throw new ArgumentException("The first two genres (id 1 and 2) cannot be deleted.");
         var genre = await ctx.Genres.FirstOrDefaultAsync(g => g.Id == genreId);
         if (genre == null)
             throw new KeyNotFoundException("Could not find the genre with id: " + genreId + "");
