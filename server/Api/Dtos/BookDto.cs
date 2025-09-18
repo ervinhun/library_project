@@ -17,10 +17,10 @@ public class BookDto
     }
     
     public List<BookDto> Books { get; set; } = new List<BookDto>();
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
     [MinLength(3, ErrorMessage = "A book must have a title, at least 3 characters long.")]
-    public string Title { get; set; } = null!;
+    public string Title { get; set; }
 
     [Range(49, int.MaxValue, ErrorMessage = "A book must have at least 49 pages.")]
     public int Pages { get; set; }
