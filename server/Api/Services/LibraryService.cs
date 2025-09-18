@@ -170,4 +170,14 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
     {
         throw new NotImplementedException();
     }
+
+    private int checkIfBookExistsWithGenre(string genreId)
+    {
+        throw new NotImplementedException();
+    }
+    
+    private int checkIfBookExistsWithAuthor(string authorId)
+    {
+        throw new NotImplementedException();
+    }
 }
