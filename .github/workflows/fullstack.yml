@@ -9,27 +9,9 @@ on:
         branches:
         - main
 jobs:
-  filter:
-    runs-on: ubuntu-latest
-    outputs:
-      backend_changed: ${{ steps.filter.outputs.backend }}
-      frontend_changed: ${{ steps.filter.outputs.frontend }}
-    steps:
-      - uses: actions/checkout@v3
-      - id: filter
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            backend:
-              - 'server/**'
-            frontend:
-              - 'client/**'
-            
-            
   backend:
     name: Backend CI
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' && needs.filter.outputs.backend == 'true' }}
     
     steps:
       # 1. Checkout code
@@ -81,7 +63,6 @@ jobs:
   frontend:
     name: Frontend CI
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' && needs.filter.outputs.frontend == 'true' }}
     
     steps:
       # 1. Checkout code
