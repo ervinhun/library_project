@@ -168,7 +168,18 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<IActionResult> DeleteGenre(string genreId)
     {
-        throw new NotImplementedException();
+        if (genreId.Equals("1") || genreId.Equals("2"))
+            throw new ArgumentException("The first two genres (id 1 and 2) cannot be deleted.");
+        var genre = await ctx.Genres.FirstOrDefaultAsync(g => g.Id == genreId);
+        if (genre == null)
+            throw new KeyNotFoundException("Could not find the genre with id: " + genreId + "");
+        if (await checkIfBookExistsWithGenre(genreId))
+            throw new InvalidOperationException("Cannot delete genre with id: " + genreId + " because there are books associated with it.");
+        ctx.Genres.Remove(genre);
+        var result = await ctx.SaveChangesAsync();
+        if (result > 0)
+            return new OkResult();
+        return new BadRequestResult();
     }
 
     private async Task<bool> checkIfBookExistsWithGenre(string genreId)
