@@ -195,10 +195,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     private async Task<bool> CheckIfBookExistsWithGenre(string genreId)
     {
-        var genre = await ctx.Genres.Include(genre => genre.Books).FirstOrDefaultAsync(g => g.Id == genreId);
-        if (genre == null || genre.Books.Count == 0)
-            return false;
-        return true;
+        return await ctx.Books.AnyAsync(b => b.Genre.Id == genreId);
     }
     
     private async Task<bool> CheckIfBookExistsWithAuthor(string authorId)
