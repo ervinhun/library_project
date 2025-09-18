@@ -1,3 +1,4 @@
+using api.Etc;
 using Api.Services;
 using dataaccess;
 using Microsoft.EntityFrameworkCore;
@@ -25,4 +26,5 @@ app.UseSwaggerUi(config =>
     config.Path = String.Empty;
 });
 app.MapControllers();
+app.GenerateApiClientsFromOpenApi("/../../client/src/models/generated-client.ts").GetAwaiter().GetResult();
 await app.RunAsync();

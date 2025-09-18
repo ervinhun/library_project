@@ -1,0 +1,115 @@
+﻿name: FullStack Ci
+
+on:
+    pull_request:
+        paths:
+        - 'server/**'
+        - 'client/**'
+    push:
+        branches:
+        - main
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    outputs:
+      backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            backend:
+              - 'server/**'
+            frontend:
+              - 'client/**'
+            
+            
+  backend:
+    name: Backend CI
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && needs.filter.outputs.backend == 'true' }}
+    
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Setup .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      # 3. Restore solution dependencies
+      - name: Restore dependencies
+        run: dotnet restore library_project.sln
+
+      # 4. Build solution
+      - name: Build solution
+        run: dotnet build library_project.sln --configuration Release --no-restore
+
+      # 5. Generate appsettings.json from GitHub Secret
+      - name: Generate appsettings.json
+        run: |
+          cat <<EOF > server/Api/appsettings.json
+          {
+            "Logging": {
+              "LogLevel": {
+                "Default": "Information",
+                "Microsoft.AspNetCore": "Warning"
+              }
+            },
+            "AllowedHosts": "*",
+            "Db": "${{ secrets.DB_CONNECTION_STRING }}"
+          }
+          EOF
+
+      # 6. Run tests
+      - name: Run tests
+        run: dotnet test library_project.sln --no-build --verbosity normal
+
+      # 7. Publish API (optional)
+      - name: Publish API
+        run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
+
+      # 8. Docker build
+      - name: Build Docker image
+        run: docker build -t library-api-backend .
+        
+  frontend:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && needs.filter.outputs.frontend == 'true' }}
+    
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        working-directory: client
+        run: npm ci
+
+      # 4. Run code style check (optional, e.g., ESLint)
+      - name: Lint
+        working-directory: client
+        run: npm run lint
+
+      # 5. Build frontend
+      - name: Build frontend
+        working-directory: client
+        run: npm run build
+
+      # 6. Run frontend tests
+      #- name: Run tests
+      #  working-directory: client
+      #  run: npm test
