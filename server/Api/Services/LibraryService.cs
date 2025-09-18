@@ -163,7 +163,18 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<IActionResult> DeleteAuthor(string authorId)
     {
-        throw new NotImplementedException();
+        if (authorId.Equals("1") || authorId.Equals("2"))
+            throw new ArgumentException("The first two authors (id 1 and 2) cannot be deleted.");
+        var author = await ctx.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
+        if (author == null)
+            throw new KeyNotFoundException("Could not find the author with id: " + authorId + "");
+        if (await CheckIfBookExistsWithAuthor(authorId))
+            throw new InvalidOperationException("Cannot delete author with id: " + authorId + " because there are books associated with it.");
+        ctx.Authors.Remove(author);
+        var result = await ctx.SaveChangesAsync();
+        if (result > 0)
+            return new OkResult();
+        return new BadRequestResult();
     }
 
     public async Task<IActionResult> DeleteGenre(string genreId)
@@ -173,7 +184,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         var genre = await ctx.Genres.FirstOrDefaultAsync(g => g.Id == genreId);
         if (genre == null)
             throw new KeyNotFoundException("Could not find the genre with id: " + genreId + "");
-        if (await checkIfBookExistsWithGenre(genreId))
+        if (await CheckIfBookExistsWithGenre(genreId))
             throw new InvalidOperationException("Cannot delete genre with id: " + genreId + " because there are books associated with it.");
         ctx.Genres.Remove(genre);
         var result = await ctx.SaveChangesAsync();
@@ -182,12 +193,12 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         return new BadRequestResult();
     }
 
-    private async Task<bool> checkIfBookExistsWithGenre(string genreId)
+    private async Task<bool> CheckIfBookExistsWithGenre(string genreId)
     {
         return await ctx.Books.AnyAsync(b => b.Genre.Id == genreId);
     }
     
-    private async Task<bool> checkIfBookExistsWithAuthor(string authorId)
+    private async Task<bool> CheckIfBookExistsWithAuthor(string authorId)
     {
         return await ctx.Books.AnyAsync(b => b.Authors.Any(a => a.Id == authorId));
     }
