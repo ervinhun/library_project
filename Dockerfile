@@ -11,7 +11,7 @@ COPY server/ ./server/
 COPY library_project.sln ./
 
 # Restore dependencies for the solution
-RUN dotnet restore MySolution.sln
+RUN dotnet restore library_project.sln
 
 # Build and publish only the Api project
 RUN dotnet publish server/Api/Api.csproj -c Release -o /app
