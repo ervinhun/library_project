@@ -27,7 +27,7 @@ public static class GenerateApiClientsExtensions
         var settings = new TypeScriptClientGeneratorSettings
         {
             Template = TypeScriptTemplate.Fetch,
-             // = true,  // Enable JSDoc generation
+            GenerateJSDoc = true,  // Enable JSDoc generation
             TypeScriptGeneratorSettings =
             {
                 TypeStyle = TypeScriptTypeStyle.Interface,
@@ -50,7 +50,6 @@ public static class GenerateApiClientsExtensions
 
         await File.WriteAllTextAsync(outputPath, code);
         
-            
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
         logger.LogInformation("OpenAPI JSON with documentation saved at: " + openApiPath);
         logger.LogInformation("TypeScript client generated at: " + outputPath);
