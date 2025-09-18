@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '9.0.x'
 
       # 3. Restore solution dependencies
       - name: Restore dependencies
@@ -53,5 +53,5 @@ jobs:
         run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
 
       # 8. Optional Docker build
-      # - name: Build Docker image
-      #   run: docker build -t my-backend-image ./server
+      - name: Build Docker image
+        run: docker build -t library-api-backend .
