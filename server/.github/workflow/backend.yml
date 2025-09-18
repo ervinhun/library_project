@@ -53,5 +53,5 @@ jobs:
         run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
 
       # 8. Optional Docker build
-      # - name: Build Docker image
-      #   run: docker build -t my-backend-image ./server
+       - name: Build Docker image
+         run: docker build -t my-backend-image ./server
