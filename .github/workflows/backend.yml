@@ -1,0 +1,56 @@
+name: Backend CI
+
+on:
+  pull_request:
+    paths:
+      - 'server/**'
+
+jobs:
+  build-and-test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Setup .NET SDK
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      # 3. Restore solution dependencies
+      - name: Restore dependencies
+        run: dotnet restore library_project.sln
+
+      # 4. Build solution
+      - name: Build solution
+        run: dotnet build library_project.sln --configuration Release --no-restore
+
+      # 5. Generate appsettings.json from GitHub Secret
+      - name: Generate appsettings.json
+        run: |
+          echo "{
+            \"Logging\": {
+              \"LogLevel\": {
+                \"Default\": \"Information\",
+                \"Microsoft.AspNetCore\": \"Warning\"
+              }
+            },
+            \"AllowedHosts\": \"*\",
+            \"Db\": \"${{ secrets.DB_CONNECTION_STRING }}\"
+          }" > server/Api/appsettings.json
+
+
+      # 6. Run tests
+      - name: Run tests
+        run: dotnet test library_project.sln --no-build --verbosity normal
+
+      # 7. Publish API (optional)
+      - name: Publish API
+        run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
+
+      # 8. Optional Docker build
+      - name: Build Docker image
+        run: docker build -t my-backend-image ./server
