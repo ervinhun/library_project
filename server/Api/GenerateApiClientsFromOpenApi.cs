@@ -27,7 +27,6 @@ public static class GenerateApiClientsExtensions
         var settings = new TypeScriptClientGeneratorSettings
         {
             Template = TypeScriptTemplate.Fetch,
-            GenerateJSDoc = true,  // Enable JSDoc generation
             TypeScriptGeneratorSettings =
             {
                 TypeStyle = TypeScriptTypeStyle.Interface,
