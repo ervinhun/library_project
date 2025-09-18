@@ -57,6 +57,6 @@ jobs:
       - name: Publish API
         run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
 
-      # 8. Optional Docker build
+      # 8. Docker build
       - name: Build Docker image
         run: docker build -t library-api-backend .

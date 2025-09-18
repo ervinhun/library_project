@@ -8,7 +8,7 @@ WORKDIR /src
 
 # Copy only server/Api and server/DataAccess for efficient caching
 COPY server/ ./server/
-COPY MySolution.sln ./
+COPY library_project.sln ./
 
 # Restore dependencies for the solution
 RUN dotnet restore MySolution.sln
