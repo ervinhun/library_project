@@ -10,6 +10,18 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1.0.0";
     config.Description = "Books with Genres, and Authors API for project.";
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173", "https://client-quiet-surf-2481.fly.dev")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
 builder.Services.AddControllers();
 builder.Services.AddScoped<ILibraryService, LibraryService>();
 
@@ -27,4 +39,5 @@ app.UseSwaggerUi(config =>
 });
 app.MapControllers();
 app.GenerateApiClientsFromOpenApi("/../../client/src/models/generated-client.ts").GetAwaiter().GetResult();
+app.UseCors("FrontendPolicy");
 await app.RunAsync();
