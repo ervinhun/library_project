@@ -56,7 +56,7 @@ export default function Home() {
                         className={`card card-side bg-blue-500 shadow-md m-4 w-full cursor-pointer ${
                             b.pages < 100 ? "opacity-50" : ""
                         }`}
-                        onClick={() => navigate(`/pet/${b.id}`)}
+                        onClick={() => navigate(`/book/${b.id}`)}
                     >
 
                         <div className="card-body justify-center">
