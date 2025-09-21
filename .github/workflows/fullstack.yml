@@ -26,11 +26,11 @@ jobs:
 
       # 3. Restore solution dependencies
       - name: Restore dependencies
-        run: dotnet restore library_project.sln
+        run: dotnet restore server/library_project.sln
 
       # 4. Build solution
       - name: Build solution
-        run: dotnet build library_project.sln --configuration Release --no-restore
+        run: dotnet build server/library_project.sln --configuration Release --no-restore
 
       # 5. Generate appsettings.json from GitHub Secret
       - name: Generate appsettings.json
@@ -50,7 +50,7 @@ jobs:
 
       # 6. Run tests
       - name: Run tests
-        run: dotnet test library_project.sln --no-build --verbosity normal
+        run: dotnet test server/library_project.sln --no-build --verbosity normal
 
       # 7. Publish API (optional)
       - name: Publish API
