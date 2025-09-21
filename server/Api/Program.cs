@@ -37,7 +37,7 @@ app.UseSwaggerUi(config =>
 {
     config.Path = String.Empty;
 });
+app.UseCors("FrontendPolicy");
 app.MapControllers();
 app.GenerateApiClientsFromOpenApi("/../../client/src/models/generated-client.ts").GetAwaiter().GetResult();
-app.UseCors("FrontendPolicy");
 await app.RunAsync();
