@@ -58,7 +58,9 @@ jobs:
 
       # 8. Docker build
       - name: Build Docker image
-        run: docker build -t library-api-backend/server server/
+        working-directory: server
+        run: docker build -t library-api-backend/server .
+
 
         
   frontend:
