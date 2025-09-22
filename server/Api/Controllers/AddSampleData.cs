@@ -8,7 +8,7 @@ namespace api.Controller;
 public class AddSampleData(MyDbContext db) : ControllerBase
 {
     [HttpPost(nameof(AddSampleDataOnce))]
-    public List<AuthorDto> AddSampleDataOnce()
+    public List<AuthorResponseDto> AddSampleDataOnce()
     {
         List<Author> authors = new List<Author>();
         
@@ -38,6 +38,6 @@ public class AddSampleData(MyDbContext db) : ControllerBase
 
         db.Authors.AddRange(authors);
         db.SaveChanges();
-        return authors.Select(a => new AuthorDto(a)).ToList();
+        return authors.Select(a => new AuthorResponseDto(a)).ToList();
     }
 }

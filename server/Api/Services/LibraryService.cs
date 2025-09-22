@@ -1,6 +1,6 @@
-﻿using Api.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+using Api.Dtos;
 using dataaccess;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services;
@@ -8,7 +8,7 @@ namespace Api.Services;
 public class LibraryService(MyDbContext ctx) : ILibraryService
 {
     private static readonly String NoBooksFoundMessage = "Could not find any books";
-    public async Task<BookDto> GetBookById(string bookId)
+    public async Task<BookResponseDto> GetBookById(string bookId)
     {
         var book = await ctx.Books
             .Include(b => b.Genre)
@@ -17,28 +17,28 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         
         if (book == null)
             throw new KeyNotFoundException("Could not find book with id: " + bookId + "");
-        return new BookDto(book);
+        return new BookResponseDto(book);
     }
 
-    public async Task<AuthorDto> GetAuthorById(string authorId)
+    public async Task<AuthorResponseDto> GetAuthorById(string authorId)
     {
         var author = await ctx.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
         if (author == null)
             throw new KeyNotFoundException("Could not find author with id: " + authorId + "");
-        return new AuthorDto(author);
+        return new AuthorResponseDto(author);
     }
 
-    public async Task<GenreDto> GetGenreById(string genreId)
+    public async Task<GenreResponseDto> GetGenreById(string genreId)
     {
         var genre = await ctx.Genres.FirstOrDefaultAsync(g => g.Id == genreId);
         if (genre == null)
             throw new KeyNotFoundException("Could not find genre with id: " + genreId + "");
-        return new GenreDto(genre);
+        return new GenreResponseDto(genre);
     }
 
-    public async Task<List<BookDto>> GetAllBooks()
+    public async Task<List<BookResponseDto>> GetAllBooks()
     {
-        List<BookDto> books = new List<BookDto>();
+        List<BookResponseDto> books = new List<BookResponseDto>();
         var booksDbEntities = 
             await ctx.Books
                 .Include(b => b.Genre)
@@ -46,7 +46,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
                 .ToListAsync();
         foreach (var book in booksDbEntities)
         {
-            books.Add(new BookDto(book));
+            books.Add(new BookResponseDto(book));
             Console.WriteLine(book.Title);
         }
         if (books.Count == 0)
@@ -54,34 +54,34 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         return  books;
     }
 
-    public async Task<List<AuthorDto>> GetAllAuthors()
+    public async Task<List<AuthorResponseDto>> GetAllAuthors()
     {
         var authors = await ctx.Authors.ToListAsync();
-        List<AuthorDto> authorDtos = new List<AuthorDto>();
+        List<AuthorResponseDto> authorDtos = new List<AuthorResponseDto>();
         if (authors.Count == 0)
             throw new KeyNotFoundException("Could not find any authors");
         foreach (var author in authors)
         {
-            authorDtos.Add(new AuthorDto(author));
+            authorDtos.Add(new AuthorResponseDto(author));
         }
         return authorDtos;
         
     }
 
-    public async Task<List<GenreDto>> GetAllGenres()
+    public async Task<List<GenreResponseDto>> GetAllGenres()
     {
-        List<GenreDto> genresDto = new List<GenreDto>();
+        List<GenreResponseDto> genresDto = new List<GenreResponseDto>();
         var genres = await ctx.Genres.ToListAsync();
         if (genres.Count == 0)
             throw new KeyNotFoundException("Could not find any genres");
         foreach (var genre in genres)
         {
-            genresDto.Add(new GenreDto(genre));
+            genresDto.Add(new GenreResponseDto(genre));
         }
         return genresDto;
     }
 
-    public async Task<List<BookDto>> GetAllBooksByGenre(string genreId)
+    public async Task<List<BookResponseDto>> GetAllBooksByGenre(string genreId)
     {
         var books = await ctx.Books.Where(b => b.Genreid == genreId)
             .Include(b => b.Genre)
@@ -89,12 +89,12 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             .ToListAsync();
         if (books.Count == 0)
             throw new KeyNotFoundException(NoBooksFoundMessage);
-        var booksDto = books.Select(b => new BookDto(b)).ToList();
+        var booksDto = books.Select(b => new BookResponseDto(b)).ToList();
         return booksDto;
         
     }
 
-    public async Task<List<BookDto>> GetAllBooksByTitle(string title)
+    public async Task<List<BookResponseDto>> GetAllBooksByTitle(string title)
     {
         var books = await ctx.Books.Where(b => b.Title.Contains(title))
             .Include(b => b.Genre)
@@ -102,11 +102,11 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             .ToListAsync();
         if (books.Count == 0)
             throw new KeyNotFoundException(NoBooksFoundMessage);
-        var booksDto = books.Select(b => new BookDto(b)).ToList();
+        var booksDto = books.Select(b => new BookResponseDto(b)).ToList();
         return booksDto;
     }
 
-    public async Task<List<BookDto>> GetAllBooksByAuthor(string authorId)
+    public async Task<List<BookResponseDto>> GetAllBooksByAuthor(string authorId)
     {
         var books = await ctx.Books
             .Where(b => b.Authors.Any(a => a.Id == authorId))
@@ -115,48 +115,124 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             .ToListAsync();
         if (books.Count == 0)
             throw new KeyNotFoundException(NoBooksFoundMessage);
-        var booksDto = books.Select(b => new BookDto(b)).ToList();
+        var booksDto = books.Select(b => new BookResponseDto(b)).ToList();
         return booksDto;
     }
 
-    public async Task<BookDto> AddBook(BookDto bookDto)
+    public async Task<BookResponseDto> AddBook(BookCreateRequestDto bookResponseDto)
     {
-        throw new NotImplementedException();
+        var newBook = new Book
+        {
+            Id = Guid.NewGuid().ToString(),
+            Title = bookResponseDto.Title,
+            Pages = bookResponseDto.Pages,
+            Createdat = DateTime.Now.ToUniversalTime(),
+            Genreid = bookResponseDto.Genreid
+        };
+        ctx.Books.Add(newBook);
+        var result = await ctx.SaveChangesAsync();
+        return new BookResponseDto(newBook);
     }
 
-    public async Task<AuthorDto> AddAuthor(AuthorDto authorDto)
+    public async Task<AuthorResponseDto> AddAuthor(string authorName)
     {
-        throw new NotImplementedException();
+        var author = new Author()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = authorName,
+            Createdat = DateTime.Now.ToUniversalTime()
+        };
+        await ctx.Authors.AddAsync(author);
+        await ctx.SaveChangesAsync();
+        return new AuthorResponseDto(author);
     }
 
-    public async Task<GenreDto> AddGenre(GenreDto genreDto)
+    public async Task<GenreResponseDto> AddGenre(string genreName)
     {
-        throw new NotImplementedException();
+        var genre = new Genre()
+        {
+            Id = Guid.NewGuid().ToString(),
+            Name = genreName,
+            Createdat = DateTime.Now.ToUniversalTime()
+        };
+        await ctx.Genres.AddAsync(genre);
+        await ctx.SaveChangesAsync();
+        return new GenreResponseDto(genre);
     }
 
-    public async Task<BookDto> UpdateBook(string bookId, BookDto bookDto)
+    public async Task<BookResponseDto> UpdateBook(string bookId, BookUpdateRequestDto bookResponseDto)
     {
-        throw new NotImplementedException();
+        var existingBook = await ctx.Books
+            .Include(b => b.Authors) // Make sure authors are loaded
+            .FirstOrDefaultAsync(b => b.Id == bookId);
+
+        if (existingBook == null)
+            throw new KeyNotFoundException($"Could not find book with id: {bookId}");
+
+        existingBook.Title = bookResponseDto.Title;
+        existingBook.Pages = bookResponseDto.Pages;
+        existingBook.Genreid = bookResponseDto.Genreid;
+
+        // Track existing author IDs
+        var existingAuthorIds = existingBook.Authors.Select(a => a.Id).ToList();
+        var newAuthorIds = bookResponseDto.Authors.Select(a => a.Id).ToList();
+
+        // Remove authors no longer present
+        var toRemove = existingBook.Authors.Where(a => !newAuthorIds.Contains(a.Id)).ToList();
+        foreach (var a in toRemove)
+            existingBook.Authors.Remove(a);
+
+        // Add new authors if not already associated
+        foreach (var a in bookResponseDto.Authors)
+        {
+            if (!existingAuthorIds.Contains(a.Id))
+            {
+                var authorEntity = await ctx.Authors.FindAsync(a.Id);
+                if (authorEntity != null)
+                    existingBook.Authors.Add(authorEntity);
+            }
+        }
+
+        await ctx.SaveChangesAsync();
+        return new BookResponseDto(existingBook);
     }
 
-    public async Task<AuthorDto> UpdateAuthor(string authorId, AuthorDto authorDto)
+
+    public async Task<AuthorResponseDto> UpdateAuthor(string authorId, AuthorRequestDto authorResponseDto)
     {
-        throw new NotImplementedException();
+        if (authorId.Equals("1") || authorId.Equals("2"))
+            throw new ArgumentException("The first two authors (id 1 and 2) cannot be updated.");
+        Validator.ValidateObject(authorResponseDto, new ValidationContext(authorResponseDto), true);
+        var existingAuthor = await ctx.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
+        if (existingAuthor == null)
+            throw new KeyNotFoundException("Could not find author with id: " + authorId + "");
+        existingAuthor.Name = authorResponseDto.Name;
+        var result = await ctx.SaveChangesAsync();
+        return new AuthorResponseDto(existingAuthor);
     }
 
-    public async Task<GenreDto> UpdateGenre(string genreId, GenreDto genreDto)
+    public async Task<GenreResponseDto> UpdateGenre(string genreId, GenreRequestDto genreResponseDto)
     {
-        throw new NotImplementedException();
+        var genre = await ctx.Genres.FirstOrDefaultAsync(g => g.Id == genreId);
+        if (genre == null)
+            throw new KeyNotFoundException("Could not find genre with id: " + genreId + "");
+        
+        genre.Name = genreResponseDto.Name;
+        genre.Createdat = genre.Createdat;
+        var result = await ctx.SaveChangesAsync();
+        if (result == 0)
+            throw new InvalidOperationException("Could not update genre with id: " + genreId + "");
+        return new GenreResponseDto(genre);
     }
 
     public async Task<bool> DeleteBook(string bookId)
     {
         if (bookId.Equals("1") || bookId.Equals("2"))
             throw new ArgumentException(FirstTwoCannotBeDeleted("books"));
-        var ac = ctx.Books.FirstOrDefaultAsync(b => b.Id == bookId);
-        if (ac.Result == null)
+        var existingBook = ctx.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+        if (existingBook.Result == null)
             throw new KeyNotFoundException(CannotFind("book", bookId));
-        ctx.Books.Remove(ac.Result);
+        ctx.Books.Remove(existingBook.Result);
         var result = await ctx.SaveChangesAsync();
         return result > 0;
     }

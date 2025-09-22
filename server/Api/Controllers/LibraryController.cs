@@ -6,125 +6,209 @@ namespace api.Controller;
 
 public class LibraryController : ControllerBase
 {
-    
     private readonly ILibraryService _service;
 
     public LibraryController(ILibraryService service)
     {
         _service = service;
     }
-    
-    
+
+
     [HttpGet(nameof(GetBookById))]
-    public async Task<ActionResult<BookDto>> GetBookById([FromQuery] string bookId)
+    public async Task<ActionResult<BookResponseDto>> GetBookById([FromQuery] string bookId)
     {
         var book = await _service.GetBookById(bookId);
         return Ok(book);
     }
-    
+
     [HttpGet(nameof(GetAuthorById))]
-    public async Task<ActionResult<AuthorDto>> GetAuthorById([FromQuery] string authorId)
+    public async Task<ActionResult<AuthorResponseDto>> GetAuthorById([FromQuery] string authorId)
     {
         var authorById = await _service.GetAuthorById(authorId);
         return Ok(authorById);
     }
-    
+
     [HttpGet(nameof(GetGenreById))]
-    public async Task<ActionResult<GenreDto>> GetGenreById([FromQuery] string genreId)
+    public async Task<ActionResult<GenreResponseDto>> GetGenreById([FromQuery] string genreId)
     {
         var genre = await _service.GetGenreById(genreId);
         return Ok(genre);
     }
-    
+
     [HttpGet(nameof(GetAllBooks))]
-    public async Task<ActionResult<List<BookDto>>> GetAllBooks()
+    public async Task<ActionResult<List<BookResponseDto>>> GetAllBooks()
     {
         var books = await _service.GetAllBooks();
         return Ok(books);
     }
+
     [HttpGet(nameof(GetAllAuthors))]
-    public async Task<ActionResult<List<AuthorDto>>> GetAllAuthors()
+    public async Task<ActionResult<List<AuthorResponseDto>>> GetAllAuthors()
     {
         var authors = await _service.GetAllAuthors();
         return Ok(authors);
     }
+
     [HttpGet(nameof(GetAllGenres))]
-    public async Task<ActionResult<List<GenreDto>>> GetAllGenres()
+    public async Task<ActionResult<List<GenreResponseDto>>> GetAllGenres()
     {
         var genres = await _service.GetAllGenres();
         return Ok(genres);
     }
 
     [HttpGet(nameof(GetAllBooksByGenre))]
-    public async Task<ActionResult<List<BookDto>>> GetAllBooksByGenre(string genreId)
+    public async Task<ActionResult<List<BookResponseDto>>> GetAllBooksByGenre([FromQuery] string genreId)
     {
         return Ok(await _service.GetAllBooksByGenre(genreId));
     }
 
     [HttpGet(nameof(GetAllBooksByAuthor))]
-    public async Task<ActionResult<List<BookDto>>> GetAllBooksByAuthor(string authorId)
+    public async Task<ActionResult<List<BookResponseDto>>> GetAllBooksByAuthor([FromQuery] string authorId)
     {
         return Ok(await _service.GetAllBooksByAuthor(authorId));
     }
 
     [HttpGet(nameof(GetAllBooksByTitle))]
-    public async Task<ActionResult<List<BookDto>>> GetAllBooksByTitle(string title)
+    public async Task<ActionResult<List<BookResponseDto>>> GetAllBooksByTitle([FromQuery] string title)
     {
         return Ok(await _service.GetAllBooksByTitle(title));
     }
 
     [HttpPost(nameof(AddBook))]
-    public ActionResult<BookDto> AddBook(BookDto bookDto)
+    public async Task<ActionResult<BookResponseDto>> AddBook([FromBody] BookCreateRequestDto bookCreateRequestDto)
     {
-        throw new NotImplementedException();
+        if(bookCreateRequestDto == null)
+            throw new ArgumentNullException(nameof(bookCreateRequestDto));
+        try
+        {
+            var book = await _service.AddBook(bookCreateRequestDto);
+            return Ok(book);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost(nameof(AddAuthor))]
-    public ActionResult<AuthorDto> AddAuthor(AuthorDto authorDto)
+    public async Task<ActionResult<AuthorResponseDto>> AddAuthor([FromBody] string authorName)
     {
-        throw new NotImplementedException();
+        if (authorName == null)
+            throw new ArgumentNullException(nameof(authorName));
+        try
+        {
+            var genre = await _service.AddAuthor(authorName );
+            return Ok(genre);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost(nameof(AddGenre))]
-    public ActionResult<GenreDto> AddGenre(GenreDto genreDto)
+    public async Task<ActionResult<GenreResponseDto>> AddGenre([FromBody] string genreName)
     {
-        throw new NotImplementedException();
+        if (genreName == null)
+            throw new ArgumentNullException(nameof(genreName));
+        try
+        {
+            var genre = await _service.AddGenre(genreName);
+            return Ok(genre);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPut(nameof(UpdateBook))]
-    public ActionResult<BookDto> UpdateBook(string bookId, BookDto bookDto)
+    public async Task<ActionResult<BookResponseDto>> UpdateBook([FromBody] BookUpdateRequestDto bookResponseDto)
     {
-        throw new NotImplementedException();
+        if (bookResponseDto.Id.Equals("1") || bookResponseDto.Id.Equals("2"))
+            throw new ArgumentException("The first two books (id 1 and 2) cannot be updated.");
+        if (bookResponseDto == null)
+            throw new ArgumentNullException(nameof(bookResponseDto));
+        try
+        {
+            bookResponseDto.Authors ??= new List<AuthorResponseDto>();
+            await _service.UpdateBook(bookResponseDto.Id, bookResponseDto);
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPut(nameof(UpdateAuthor))]
-    public ActionResult<AuthorDto> UpdateAuthor(string authorId, AuthorDto authorDto)
+    public async Task<ActionResult<AuthorResponseDto>> UpdateAuthor([FromBody] AuthorRequestDto authorResponseDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _service.UpdateAuthor(authorResponseDto.Id, authorResponseDto);
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPut(nameof(UpdateGenre))]
-    public ActionResult<GenreDto> UpdateGenre(string genreId, GenreDto genreDto)
+    public async Task<ActionResult<GenreResponseDto>> UpdateGenre([FromBody] GenreRequestDto genreResponseDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _service.UpdateGenre(genreResponseDto.Id, genreResponseDto);
+            return Ok();
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete(nameof(DeleteBook))]
-    public async Task<ActionResult> DeleteBook(string bookId)
+    public async Task<ActionResult> DeleteBook([FromBody] string bookId)
     {
         var result = await _service.DeleteBook(bookId);
         return result ? Ok() : BadRequest();
     }
 
     [HttpDelete(nameof(DeleteAuthor))]
-    public async Task<ActionResult> DeleteAuthor(string authorId)
+    public async Task<ActionResult> DeleteAuthor([FromBody] string authorId)
     {
         var result = await _service.DeleteAuthor(authorId);
         return result ? Ok() : BadRequest();
     }
 
     [HttpDelete(nameof(DeleteGenre))]
-    public async Task<ActionResult> DeleteGenre(string genreId)
+    public async Task<ActionResult> DeleteGenre([FromBody] string genreId)
     {
         var result = await _service.DeleteGenre(genreId);
         return result ? Ok() : BadRequest();
