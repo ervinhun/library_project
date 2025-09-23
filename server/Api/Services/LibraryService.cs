@@ -218,7 +218,6 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             throw new KeyNotFoundException("Could not find genre with id: " + genreId + "");
         
         genre.Name = genreResponseDto.Name;
-        genre.Createdat = genre.Createdat;
         var result = await ctx.SaveChangesAsync();
         if (result == 0)
             throw new InvalidOperationException("Could not update genre with id: " + genreId + "");
@@ -229,10 +228,10 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
     {
         if (bookId.Equals("1") || bookId.Equals("2"))
             throw new ArgumentException(FirstTwoCannotBeDeleted("books"));
-        var existingBook = ctx.Books.FirstOrDefaultAsync(b => b.Id == bookId);
-        if (existingBook.Result == null)
+        var existingBook = await ctx.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+        if (existingBook == null)
             throw new KeyNotFoundException(CannotFind("book", bookId));
-        ctx.Books.Remove(existingBook.Result);
+        ctx.Books.Remove(existingBook);
         var result = await ctx.SaveChangesAsync();
         return result > 0;
     }
