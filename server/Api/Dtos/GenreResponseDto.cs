@@ -2,10 +2,10 @@
 
 namespace Api.Dtos;
 
-public class GenreDto
+public class GenreResponseDto
 {
-
-    public GenreDto(Genre genre)
+    public GenreResponseDto(){}
+    public GenreResponseDto(Genre genre)
     {
         Id = genre.Id;
         Name = genre.Name;

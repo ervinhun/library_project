@@ -17,7 +17,7 @@ export class AddSampleDataClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    addSampleDataOnce(): Promise<AuthorDto[]> {
+    addSampleDataOnce(): Promise<AuthorResponseDto[]> {
         let url_ = this.baseUrl + "/AddSampleDataOnce";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -33,13 +33,13 @@ export class AddSampleDataClient {
         });
     }
 
-    protected processAddSampleDataOnce(response: Response): Promise<AuthorDto[]> {
+    protected processAddSampleDataOnce(response: Response): Promise<AuthorResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -47,7 +47,7 @@ export class AddSampleDataClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDto[]>(null as any);
+        return Promise.resolve<AuthorResponseDto[]>(null as any);
     }
 }
 
@@ -61,7 +61,7 @@ export class LibraryClient {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getBookById(bookId: string | undefined): Promise<BookDto> {
+    getBookById(bookId: string | undefined): Promise<BookResponseDto> {
         let url_ = this.baseUrl + "/GetBookById?";
         if (bookId === null)
             throw new globalThis.Error("The parameter 'bookId' cannot be null.");
@@ -81,13 +81,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetBookById(response: Response): Promise<BookDto> {
+    protected processGetBookById(response: Response): Promise<BookResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -95,10 +95,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto>(null as any);
+        return Promise.resolve<BookResponseDto>(null as any);
     }
 
-    getAuthorById(authorId: string | undefined): Promise<AuthorDto> {
+    getAuthorById(authorId: string | undefined): Promise<AuthorResponseDto> {
         let url_ = this.baseUrl + "/GetAuthorById?";
         if (authorId === null)
             throw new globalThis.Error("The parameter 'authorId' cannot be null.");
@@ -118,13 +118,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAuthorById(response: Response): Promise<AuthorDto> {
+    protected processGetAuthorById(response: Response): Promise<AuthorResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -132,10 +132,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDto>(null as any);
+        return Promise.resolve<AuthorResponseDto>(null as any);
     }
 
-    getGenreById(genreId: string | undefined): Promise<GenreDto> {
+    getGenreById(genreId: string | undefined): Promise<GenreResponseDto> {
         let url_ = this.baseUrl + "/GetGenreById?";
         if (genreId === null)
             throw new globalThis.Error("The parameter 'genreId' cannot be null.");
@@ -155,13 +155,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetGenreById(response: Response): Promise<GenreDto> {
+    protected processGetGenreById(response: Response): Promise<GenreResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -169,10 +169,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDto>(null as any);
+        return Promise.resolve<GenreResponseDto>(null as any);
     }
 
-    getAllBooks(): Promise<BookDto[]> {
+    getAllBooks(): Promise<BookResponseDto[]> {
         let url_ = this.baseUrl + "/GetAllBooks";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -188,13 +188,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAllBooks(response: Response): Promise<BookDto[]> {
+    protected processGetAllBooks(response: Response): Promise<BookResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -202,10 +202,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto[]>(null as any);
+        return Promise.resolve<BookResponseDto[]>(null as any);
     }
 
-    getAllAuthors(): Promise<AuthorDto[]> {
+    getAllAuthors(): Promise<AuthorResponseDto[]> {
         let url_ = this.baseUrl + "/GetAllAuthors";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -221,13 +221,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAllAuthors(response: Response): Promise<AuthorDto[]> {
+    protected processGetAllAuthors(response: Response): Promise<AuthorResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -235,10 +235,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDto[]>(null as any);
+        return Promise.resolve<AuthorResponseDto[]>(null as any);
     }
 
-    getAllGenres(): Promise<GenreDto[]> {
+    getAllGenres(): Promise<GenreResponseDto[]> {
         let url_ = this.baseUrl + "/GetAllGenres";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -254,13 +254,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAllGenres(response: Response): Promise<GenreDto[]> {
+    protected processGetAllGenres(response: Response): Promise<GenreResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -268,10 +268,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDto[]>(null as any);
+        return Promise.resolve<GenreResponseDto[]>(null as any);
     }
 
-    getAllBooksByGenre(genreId: string | undefined): Promise<BookDto[]> {
+    getAllBooksByGenre(genreId: string | undefined): Promise<BookResponseDto[]> {
         let url_ = this.baseUrl + "/GetAllBooksByGenre?";
         if (genreId === null)
             throw new globalThis.Error("The parameter 'genreId' cannot be null.");
@@ -291,13 +291,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAllBooksByGenre(response: Response): Promise<BookDto[]> {
+    protected processGetAllBooksByGenre(response: Response): Promise<BookResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -305,10 +305,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto[]>(null as any);
+        return Promise.resolve<BookResponseDto[]>(null as any);
     }
 
-    getAllBooksByAuthor(authorId: string | undefined): Promise<BookDto[]> {
+    getAllBooksByAuthor(authorId: string | undefined): Promise<BookResponseDto[]> {
         let url_ = this.baseUrl + "/GetAllBooksByAuthor?";
         if (authorId === null)
             throw new globalThis.Error("The parameter 'authorId' cannot be null.");
@@ -328,13 +328,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAllBooksByAuthor(response: Response): Promise<BookDto[]> {
+    protected processGetAllBooksByAuthor(response: Response): Promise<BookResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -342,10 +342,10 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto[]>(null as any);
+        return Promise.resolve<BookResponseDto[]>(null as any);
     }
 
-    getAllBooksByTitle(title: string | undefined): Promise<BookDto[]> {
+    getAllBooksByTitle(title: string | undefined): Promise<BookResponseDto[]> {
         let url_ = this.baseUrl + "/GetAllBooksByTitle?";
         if (title === null)
             throw new globalThis.Error("The parameter 'title' cannot be null.");
@@ -365,13 +365,13 @@ export class LibraryClient {
         });
     }
 
-    protected processGetAllBooksByTitle(response: Response): Promise<BookDto[]> {
+    protected processGetAllBooksByTitle(response: Response): Promise<BookResponseDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto[];
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -379,60 +379,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto[]>(null as any);
+        return Promise.resolve<BookResponseDto[]>(null as any);
     }
 
-    addBook(books: BookDto[] | undefined, id: string | undefined, title: string | undefined, pages: number | undefined, createdat: string | null | undefined, genreid: string | null | undefined, genre_Id: string | undefined, genre_Name: string | undefined, genre_Createdat: string | null | undefined, authors: AuthorDto[] | undefined): Promise<BookDto> {
-        let url_ = this.baseUrl + "/AddBook?";
-        if (books === null)
-            throw new globalThis.Error("The parameter 'books' cannot be null.");
-        else if (books !== undefined)
-            books && books.forEach((item, index) => {
-                for (const attr in item)
-        			if (item.hasOwnProperty(attr)) {
-        				url_ += "Books[" + index + "]." + attr + "=" + encodeURIComponent("" + (item as any)[attr]) + "&";
-        			}
-            });
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        if (title === null)
-            throw new globalThis.Error("The parameter 'title' cannot be null.");
-        else if (title !== undefined)
-            url_ += "Title=" + encodeURIComponent("" + title) + "&";
-        if (pages === null)
-            throw new globalThis.Error("The parameter 'pages' cannot be null.");
-        else if (pages !== undefined)
-            url_ += "Pages=" + encodeURIComponent("" + pages) + "&";
-        if (createdat !== undefined && createdat !== null)
-            url_ += "Createdat=" + encodeURIComponent("" + createdat) + "&";
-        if (genreid !== undefined && genreid !== null)
-            url_ += "Genreid=" + encodeURIComponent("" + genreid) + "&";
-        if (genre_Id === null)
-            throw new globalThis.Error("The parameter 'genre_Id' cannot be null.");
-        else if (genre_Id !== undefined)
-            url_ += "Genre.Id=" + encodeURIComponent("" + genre_Id) + "&";
-        if (genre_Name === null)
-            throw new globalThis.Error("The parameter 'genre_Name' cannot be null.");
-        else if (genre_Name !== undefined)
-            url_ += "Genre.Name=" + encodeURIComponent("" + genre_Name) + "&";
-        if (genre_Createdat !== undefined && genre_Createdat !== null)
-            url_ += "Genre.Createdat=" + encodeURIComponent("" + genre_Createdat) + "&";
-        if (authors === null)
-            throw new globalThis.Error("The parameter 'authors' cannot be null.");
-        else if (authors !== undefined)
-            authors && authors.forEach((item, index) => {
-                for (const attr in item)
-        			if (item.hasOwnProperty(attr)) {
-        				url_ += "Authors[" + index + "]." + attr + "=" + encodeURIComponent("" + (item as any)[attr]) + "&";
-        			}
-            });
+    addBook(bookCreateRequestDto: BookCreateRequestDto): Promise<BookResponseDto> {
+        let url_ = this.baseUrl + "/AddBook";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(bookCreateRequestDto);
+
         let options_: RequestInit = {
+            body: content_,
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -442,13 +402,13 @@ export class LibraryClient {
         });
     }
 
-    protected processAddBook(response: Response): Promise<BookDto> {
+    protected processAddBook(response: Response): Promise<BookResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -456,26 +416,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto>(null as any);
+        return Promise.resolve<BookResponseDto>(null as any);
     }
 
-    addAuthor(id: string | undefined, name: string | undefined, createdat: string | null | undefined): Promise<AuthorDto> {
-        let url_ = this.baseUrl + "/AddAuthor?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        if (name === null)
-            throw new globalThis.Error("The parameter 'name' cannot be null.");
-        else if (name !== undefined)
-            url_ += "Name=" + encodeURIComponent("" + name) + "&";
-        if (createdat !== undefined && createdat !== null)
-            url_ += "Createdat=" + encodeURIComponent("" + createdat) + "&";
+    addAuthor(authorName: string): Promise<AuthorResponseDto> {
+        let url_ = this.baseUrl + "/AddAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(authorName);
+
         let options_: RequestInit = {
+            body: content_,
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -485,13 +439,13 @@ export class LibraryClient {
         });
     }
 
-    protected processAddAuthor(response: Response): Promise<AuthorDto> {
+    protected processAddAuthor(response: Response): Promise<AuthorResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -499,26 +453,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDto>(null as any);
+        return Promise.resolve<AuthorResponseDto>(null as any);
     }
 
-    addGenre(id: string | undefined, name: string | undefined, createdat: string | null | undefined): Promise<GenreDto> {
-        let url_ = this.baseUrl + "/AddGenre?";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        if (name === null)
-            throw new globalThis.Error("The parameter 'name' cannot be null.");
-        else if (name !== undefined)
-            url_ += "Name=" + encodeURIComponent("" + name) + "&";
-        if (createdat !== undefined && createdat !== null)
-            url_ += "Createdat=" + encodeURIComponent("" + createdat) + "&";
+    addGenre(genreName: string): Promise<GenreResponseDto> {
+        let url_ = this.baseUrl + "/AddGenre";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(genreName);
+
         let options_: RequestInit = {
+            body: content_,
             method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -528,13 +476,13 @@ export class LibraryClient {
         });
     }
 
-    protected processAddGenre(response: Response): Promise<GenreDto> {
+    protected processAddGenre(response: Response): Promise<GenreResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -542,64 +490,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDto>(null as any);
+        return Promise.resolve<GenreResponseDto>(null as any);
     }
 
-    updateBook(bookId: string | undefined, books: BookDto[] | undefined, id: string | undefined, title: string | undefined, pages: number | undefined, createdat: string | null | undefined, genreid: string | null | undefined, genre_Id: string | undefined, genre_Name: string | undefined, genre_Createdat: string | null | undefined, authors: AuthorDto[] | undefined): Promise<BookDto> {
-        let url_ = this.baseUrl + "/UpdateBook?";
-        if (bookId === null)
-            throw new globalThis.Error("The parameter 'bookId' cannot be null.");
-        else if (bookId !== undefined)
-            url_ += "bookId=" + encodeURIComponent("" + bookId) + "&";
-        if (books === null)
-            throw new globalThis.Error("The parameter 'books' cannot be null.");
-        else if (books !== undefined)
-            books && books.forEach((item, index) => {
-                for (const attr in item)
-        			if (item.hasOwnProperty(attr)) {
-        				url_ += "Books[" + index + "]." + attr + "=" + encodeURIComponent("" + (item as any)[attr]) + "&";
-        			}
-            });
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        if (title === null)
-            throw new globalThis.Error("The parameter 'title' cannot be null.");
-        else if (title !== undefined)
-            url_ += "Title=" + encodeURIComponent("" + title) + "&";
-        if (pages === null)
-            throw new globalThis.Error("The parameter 'pages' cannot be null.");
-        else if (pages !== undefined)
-            url_ += "Pages=" + encodeURIComponent("" + pages) + "&";
-        if (createdat !== undefined && createdat !== null)
-            url_ += "Createdat=" + encodeURIComponent("" + createdat) + "&";
-        if (genreid !== undefined && genreid !== null)
-            url_ += "Genreid=" + encodeURIComponent("" + genreid) + "&";
-        if (genre_Id === null)
-            throw new globalThis.Error("The parameter 'genre_Id' cannot be null.");
-        else if (genre_Id !== undefined)
-            url_ += "Genre.Id=" + encodeURIComponent("" + genre_Id) + "&";
-        if (genre_Name === null)
-            throw new globalThis.Error("The parameter 'genre_Name' cannot be null.");
-        else if (genre_Name !== undefined)
-            url_ += "Genre.Name=" + encodeURIComponent("" + genre_Name) + "&";
-        if (genre_Createdat !== undefined && genre_Createdat !== null)
-            url_ += "Genre.Createdat=" + encodeURIComponent("" + genre_Createdat) + "&";
-        if (authors === null)
-            throw new globalThis.Error("The parameter 'authors' cannot be null.");
-        else if (authors !== undefined)
-            authors && authors.forEach((item, index) => {
-                for (const attr in item)
-        			if (item.hasOwnProperty(attr)) {
-        				url_ += "Authors[" + index + "]." + attr + "=" + encodeURIComponent("" + (item as any)[attr]) + "&";
-        			}
-            });
+    updateBook(bookResponseDto: BookUpdateRequestDto): Promise<BookResponseDto> {
+        let url_ = this.baseUrl + "/UpdateBook";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(bookResponseDto);
+
         let options_: RequestInit = {
+            body: content_,
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -609,13 +513,13 @@ export class LibraryClient {
         });
     }
 
-    protected processUpdateBook(response: Response): Promise<BookDto> {
+    protected processUpdateBook(response: Response): Promise<BookResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as BookResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -623,30 +527,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDto>(null as any);
+        return Promise.resolve<BookResponseDto>(null as any);
     }
 
-    updateAuthor(authorId: string | undefined, id: string | undefined, name: string | undefined, createdat: string | null | undefined): Promise<AuthorDto> {
-        let url_ = this.baseUrl + "/UpdateAuthor?";
-        if (authorId === null)
-            throw new globalThis.Error("The parameter 'authorId' cannot be null.");
-        else if (authorId !== undefined)
-            url_ += "authorId=" + encodeURIComponent("" + authorId) + "&";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        if (name === null)
-            throw new globalThis.Error("The parameter 'name' cannot be null.");
-        else if (name !== undefined)
-            url_ += "Name=" + encodeURIComponent("" + name) + "&";
-        if (createdat !== undefined && createdat !== null)
-            url_ += "Createdat=" + encodeURIComponent("" + createdat) + "&";
+    updateAuthor(authorResponseDto: AuthorRequestDto): Promise<AuthorResponseDto> {
+        let url_ = this.baseUrl + "/UpdateAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(authorResponseDto);
+
         let options_: RequestInit = {
+            body: content_,
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -656,13 +550,13 @@ export class LibraryClient {
         });
     }
 
-    protected processUpdateAuthor(response: Response): Promise<AuthorDto> {
+    protected processUpdateAuthor(response: Response): Promise<AuthorResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -670,30 +564,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDto>(null as any);
+        return Promise.resolve<AuthorResponseDto>(null as any);
     }
 
-    updateGenre(genreId: string | undefined, id: string | undefined, name: string | undefined, createdat: string | null | undefined): Promise<GenreDto> {
-        let url_ = this.baseUrl + "/UpdateGenre?";
-        if (genreId === null)
-            throw new globalThis.Error("The parameter 'genreId' cannot be null.");
-        else if (genreId !== undefined)
-            url_ += "genreId=" + encodeURIComponent("" + genreId) + "&";
-        if (id === null)
-            throw new globalThis.Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
-            url_ += "Id=" + encodeURIComponent("" + id) + "&";
-        if (name === null)
-            throw new globalThis.Error("The parameter 'name' cannot be null.");
-        else if (name !== undefined)
-            url_ += "Name=" + encodeURIComponent("" + name) + "&";
-        if (createdat !== undefined && createdat !== null)
-            url_ += "Createdat=" + encodeURIComponent("" + createdat) + "&";
+    updateGenre(genreResponseDto: GenreRequestDto): Promise<GenreResponseDto> {
+        let url_ = this.baseUrl + "/UpdateGenre";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(genreResponseDto);
+
         let options_: RequestInit = {
+            body: content_,
             method: "PUT",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             }
         };
@@ -703,13 +587,13 @@ export class LibraryClient {
         });
     }
 
-    protected processUpdateGenre(response: Response): Promise<GenreDto> {
+    protected processUpdateGenre(response: Response): Promise<GenreResponseDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GenreResponseDto;
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -717,20 +601,20 @@ export class LibraryClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDto>(null as any);
+        return Promise.resolve<GenreResponseDto>(null as any);
     }
 
-    deleteBook(bookId: string | undefined): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/DeleteBook?";
-        if (bookId === null)
-            throw new globalThis.Error("The parameter 'bookId' cannot be null.");
-        else if (bookId !== undefined)
-            url_ += "bookId=" + encodeURIComponent("" + bookId) + "&";
+    deleteBook(bookId: string): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/DeleteBook";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(bookId);
+
         let options_: RequestInit = {
+            body: content_,
             method: "DELETE",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             }
         };
@@ -762,17 +646,17 @@ export class LibraryClient {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    deleteAuthor(authorId: string | undefined): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/DeleteAuthor?";
-        if (authorId === null)
-            throw new globalThis.Error("The parameter 'authorId' cannot be null.");
-        else if (authorId !== undefined)
-            url_ += "authorId=" + encodeURIComponent("" + authorId) + "&";
+    deleteAuthor(authorId: string): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/DeleteAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(authorId);
+
         let options_: RequestInit = {
+            body: content_,
             method: "DELETE",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             }
         };
@@ -804,17 +688,17 @@ export class LibraryClient {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    deleteGenre(genreId: string | undefined): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/DeleteGenre?";
-        if (genreId === null)
-            throw new globalThis.Error("The parameter 'genreId' cannot be null.");
-        else if (genreId !== undefined)
-            url_ += "genreId=" + encodeURIComponent("" + genreId) + "&";
+    deleteGenre(genreId: string): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/DeleteGenre";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(genreId);
+
         let options_: RequestInit = {
+            body: content_,
             method: "DELETE",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             }
         };
@@ -847,27 +731,51 @@ export class LibraryClient {
     }
 }
 
-export interface AuthorDto {
+export interface AuthorResponseDto {
     id?: string;
     name?: string;
     createdat?: string | undefined;
 }
 
-export interface BookDto {
-    books?: BookDto[];
+export interface BookResponseDto {
     id?: string;
     title?: string;
     pages?: number;
     createdat?: string | undefined;
     genreid?: string | undefined;
-    genre?: GenreDto | undefined;
-    authors?: AuthorDto[];
+    genre?: GenreResponseDto | undefined;
+    authors?: AuthorResponseDto[];
 }
 
-export interface GenreDto {
+export interface GenreResponseDto {
     id?: string;
     name?: string;
     createdat?: string | undefined;
+}
+
+export interface BookCreateRequestDto {
+    title?: string;
+    pages?: number;
+    genreid?: string | undefined;
+}
+
+export interface BookUpdateRequestDto {
+    id?: string;
+    title?: string;
+    pages?: number;
+    genreid?: string | undefined;
+    genre?: GenreResponseDto | undefined;
+    authors?: AuthorResponseDto[];
+}
+
+export interface AuthorRequestDto {
+    id?: string;
+    name?: string;
+}
+
+export interface GenreRequestDto {
+    id?: string;
+    name?: string;
 }
 
 export interface FileResponse {

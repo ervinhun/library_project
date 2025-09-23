@@ -1,22 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using dataaccess;
 
 namespace Api.Dtos;
 
-public class BookDto
+public class BookResponseDto
 {
-    public BookDto(Book book)
+    public BookResponseDto() {}
+    public BookResponseDto(Book book)
     {
         Id = book.Id;
         Title = book.Title;
         Pages = book.Pages;
         Createdat = book.Createdat;
         Genreid = book.Genreid;
-        Genre = new GenreDto(book.Genre!);
-        Authors = book.Authors.Select(a => new AuthorDto(a)).ToList();
+        Genre = book.Genre != null ? new GenreResponseDto(book.Genre!) : null;
+        Authors = book.Authors?.Select(a => new AuthorResponseDto(a)).ToList() ?? new List<AuthorResponseDto>();
     }
-    
-    public List<BookDto> Books { get; set; } = new List<BookDto>();
     public string Id { get; set; }
 
     [MinLength(3, ErrorMessage = "A book must have a title, at least 3 characters long.")]
@@ -30,7 +30,7 @@ public class BookDto
 
     public string? Genreid { get; set; }
 
-    public GenreDto? Genre { get; set; }
+    public GenreResponseDto? Genre { get; set; }
 
-    public ICollection<AuthorDto> Authors { get; set; } = new List<AuthorDto>();
+    public ICollection<AuthorResponseDto> Authors { get; set; } = new List<AuthorResponseDto>();
 }

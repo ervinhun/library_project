@@ -3,10 +3,11 @@ using dataaccess;
 
 namespace Api.Dtos;
 
-public class AuthorDto
+public class AuthorResponseDto
 {
+    public AuthorResponseDto(){}
 
-    public AuthorDto(Author author)
+    public AuthorResponseDto(Author author)
     {
         Id = author.Id;
         Name = author.Name;

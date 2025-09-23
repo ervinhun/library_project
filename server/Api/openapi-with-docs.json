@@ -21,7 +21,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AuthorDto"
+                    "$ref": "#/components/schemas/AuthorResponseDto"
                   }
                 }
               }
@@ -52,7 +52,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BookDto"
+                  "$ref": "#/components/schemas/BookResponseDto"
                 }
               }
             }
@@ -82,7 +82,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthorDto"
+                  "$ref": "#/components/schemas/AuthorResponseDto"
                 }
               }
             }
@@ -112,7 +112,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GenreDto"
+                  "$ref": "#/components/schemas/GenreResponseDto"
                 }
               }
             }
@@ -134,7 +134,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BookDto"
+                    "$ref": "#/components/schemas/BookResponseDto"
                   }
                 }
               }
@@ -157,7 +157,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/AuthorDto"
+                    "$ref": "#/components/schemas/AuthorResponseDto"
                   }
                 }
               }
@@ -180,7 +180,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/GenreDto"
+                    "$ref": "#/components/schemas/GenreResponseDto"
                   }
                 }
               }
@@ -213,7 +213,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BookDto"
+                    "$ref": "#/components/schemas/BookResponseDto"
                   }
                 }
               }
@@ -246,7 +246,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BookDto"
+                    "$ref": "#/components/schemas/BookResponseDto"
                   }
                 }
               }
@@ -279,7 +279,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/BookDto"
+                    "$ref": "#/components/schemas/BookResponseDto"
                   }
                 }
               }
@@ -294,114 +294,25 @@
           "Library"
         ],
         "operationId": "Library_AddBook",
-        "parameters": [
-          {
-            "name": "Books",
-            "in": "query",
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BookDto"
+        "requestBody": {
+          "x-name": "bookCreateRequestDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookCreateRequestDto"
               }
-            },
-            "x-position": 1
+            }
           },
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Title",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "minLength": 3
-            },
-            "x-position": 3
-          },
-          {
-            "name": "Pages",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 49.0
-            },
-            "x-position": 4
-          },
-          {
-            "name": "Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 5
-          },
-          {
-            "name": "Genreid",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 6
-          },
-          {
-            "name": "Genre.Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 7
-          },
-          {
-            "name": "Genre.Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 8
-          },
-          {
-            "name": "Genre.Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 9
-          },
-          {
-            "name": "Authors",
-            "in": "query",
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/AuthorDto"
-              }
-            },
-            "x-position": 10
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BookDto"
+                  "$ref": "#/components/schemas/BookResponseDto"
                 }
               }
             }
@@ -415,42 +326,25 @@
           "Library"
         ],
         "operationId": "Library_AddAuthor",
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "authorName",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
           },
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "minLength": 3
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 3
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthorDto"
+                  "$ref": "#/components/schemas/AuthorResponseDto"
                 }
               }
             }
@@ -464,41 +358,25 @@
           "Library"
         ],
         "operationId": "Library_AddGenre",
-        "parameters": [
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "genreName",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
           },
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 3
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GenreDto"
+                  "$ref": "#/components/schemas/GenreResponseDto"
                 }
               }
             }
@@ -512,122 +390,25 @@
           "Library"
         ],
         "operationId": "Library_UpdateBook",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "Books",
-            "in": "query",
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/BookDto"
+        "requestBody": {
+          "x-name": "bookResponseDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookUpdateRequestDto"
               }
-            },
-            "x-position": 2
+            }
           },
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
-          },
-          {
-            "name": "Title",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "minLength": 3
-            },
-            "x-position": 4
-          },
-          {
-            "name": "Pages",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "maximum": 2147483647.0,
-              "minimum": 49.0
-            },
-            "x-position": 5
-          },
-          {
-            "name": "Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 6
-          },
-          {
-            "name": "Genreid",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 7
-          },
-          {
-            "name": "Genre.Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 8
-          },
-          {
-            "name": "Genre.Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 9
-          },
-          {
-            "name": "Genre.Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 10
-          },
-          {
-            "name": "Authors",
-            "in": "query",
-            "style": "form",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/AuthorDto"
-              }
-            },
-            "x-position": 11
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BookDto"
+                  "$ref": "#/components/schemas/BookResponseDto"
                 }
               }
             }
@@ -641,50 +422,25 @@
           "Library"
         ],
         "operationId": "Library_UpdateAuthor",
-        "parameters": [
-          {
-            "name": "authorId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "authorResponseDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorRequestDto"
+              }
+            }
           },
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "minLength": 3
-            },
-            "x-position": 3
-          },
-          {
-            "name": "Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 4
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthorDto"
+                  "$ref": "#/components/schemas/AuthorResponseDto"
                 }
               }
             }
@@ -698,49 +454,25 @@
           "Library"
         ],
         "operationId": "Library_UpdateGenre",
-        "parameters": [
-          {
-            "name": "genreId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "genreResponseDto",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenreRequestDto"
+              }
+            }
           },
-          {
-            "name": "Id",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
-          },
-          {
-            "name": "Createdat",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            },
-            "x-position": 4
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GenreDto"
+                  "$ref": "#/components/schemas/GenreResponseDto"
                 }
               }
             }
@@ -754,16 +486,18 @@
           "Library"
         ],
         "operationId": "Library_DeleteBook",
-        "parameters": [
-          {
-            "name": "bookId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
+        "requestBody": {
+          "x-name": "bookId",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -785,16 +519,18 @@
           "Library"
         ],
         "operationId": "Library_DeleteAuthor",
-        "parameters": [
-          {
-            "name": "authorId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
+        "requestBody": {
+          "x-name": "authorId",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -816,16 +552,18 @@
           "Library"
         ],
         "operationId": "Library_DeleteGenre",
-        "parameters": [
-          {
-            "name": "genreId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 1
-          }
-        ],
+        "requestBody": {
+          "x-name": "genreId",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
@@ -844,7 +582,7 @@
   },
   "components": {
     "schemas": {
-      "AuthorDto": {
+      "AuthorResponseDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -862,16 +600,10 @@
           }
         }
       },
-      "BookDto": {
+      "BookResponseDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "books": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BookDto"
-            }
-          },
           "id": {
             "type": "string"
           },
@@ -898,19 +630,19 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/GenreDto"
+                "$ref": "#/components/schemas/GenreResponseDto"
               }
             ]
           },
           "authors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AuthorDto"
+              "$ref": "#/components/schemas/AuthorResponseDto"
             }
           }
         }
       },
-      "GenreDto": {
+      "GenreResponseDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -924,6 +656,88 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          }
+        }
+      },
+      "BookCreateRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 49.0
+          },
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "BookUpdateRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 3
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int32",
+            "maximum": 2147483647.0,
+            "minimum": 49.0
+          },
+          "genreid": {
+            "type": "string",
+            "nullable": true
+          },
+          "genre": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GenreResponseDto"
+              }
+            ]
+          },
+          "authors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorResponseDto"
+            }
+          }
+        }
+      },
+      "AuthorRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      },
+      "GenreRequestDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
           }
         }
       }

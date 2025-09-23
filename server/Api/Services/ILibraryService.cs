@@ -5,25 +5,25 @@ namespace Api.Services;
 
 public interface ILibraryService
 {
-    Task<BookDto> GetBookById(string bookDto);
-    Task<AuthorDto> GetAuthorById(string authorId);
-    Task<GenreDto> GetGenreById(string genreId);
+    Task<BookResponseDto> GetBookById(string bookDto);
+    Task<AuthorResponseDto> GetAuthorById(string authorId);
+    Task<GenreResponseDto> GetGenreById(string genreId);
     
-    Task<List<BookDto>> GetAllBooks();
-    Task<List<AuthorDto>> GetAllAuthors();
-    Task<List<GenreDto>> GetAllGenres();
+    Task<List<BookResponseDto>> GetAllBooks();
+    Task<List<AuthorResponseDto>> GetAllAuthors();
+    Task<List<GenreResponseDto>> GetAllGenres();
     
-    Task<List<BookDto>> GetAllBooksByGenre(string genreId);
-    Task<List<BookDto>> GetAllBooksByAuthor(string authorId);
-    Task<List<BookDto>> GetAllBooksByTitle(string title);
+    Task<List<BookResponseDto>> GetAllBooksByGenre(string genreId);
+    Task<List<BookResponseDto>> GetAllBooksByAuthor(string authorId);
+    Task<List<BookResponseDto>> GetAllBooksByTitle(string title);
     
-    Task<BookDto> AddBook(BookDto bookDto);
-    Task<AuthorDto> AddAuthor(AuthorDto authorDto);
-    Task<GenreDto> AddGenre(GenreDto genreDto);
+    Task<BookResponseDto> AddBook(BookCreateRequestDto bookResponseDto);
+    Task<AuthorResponseDto> AddAuthor(string authorName);
+    Task<GenreResponseDto> AddGenre(string genreName);
     
-    Task<BookDto> UpdateBook(string bookId, BookDto bookDto);
-    Task<AuthorDto> UpdateAuthor(string authorId, AuthorDto authorDto);
-    Task<GenreDto> UpdateGenre(string genreId, GenreDto genreDto);
+    Task<BookResponseDto> UpdateBook(string bookId, BookUpdateRequestDto bookResponseDto);
+    Task<AuthorResponseDto> UpdateAuthor(string authorId, AuthorRequestDto authorResponseDto);
+    Task<GenreResponseDto> UpdateGenre(string genreId, GenreRequestDto genreResponseDto);
     
     Task<bool> DeleteBook(string bookId);
     Task<bool> DeleteAuthor(string authorId);
