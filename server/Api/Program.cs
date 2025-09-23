@@ -58,7 +58,6 @@ public class Program
         
         services.AddControllers();
         services.AddScoped<ILibraryService, LibraryService>();
-        //services.AddScoped<ISeeder, SeederWithRelations>();
         services.AddExceptionHandler<MyGlobalExceptionHandler>();
     }
 }
