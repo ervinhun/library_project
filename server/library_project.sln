@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "server\Api\Api.csproj", "{9A5D62B2-E353-40A7-9CCB-67FB69646866}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{9A5D62B2-E353-40A7-9CCB-67FB69646866}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{B25EC6B9-7B04-422D-B1AE-8C61DC6708FF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".", ".", "{B25EC6B9-7B04-422D-B1AE-8C61DC6708FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dataaccess", "server\dataaccess\dataaccess.csproj", "{66226AC2-0FEC-421B-AA85-971B326FCF94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dataaccess", "dataaccess\dataaccess.csproj", "{66226AC2-0FEC-421B-AA85-971B326FCF94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "server\tests\tests.csproj", "{B477C957-84C7-4874-9909-E063D6156D50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{B477C957-84C7-4874-9909-E063D6156D50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
