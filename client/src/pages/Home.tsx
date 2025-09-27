@@ -2,6 +2,7 @@ import {useAtom} from "jotai";
 import {BookAtom, FilterAtom, SortingAtom} from "../Atom.ts";
 import {useNavigate} from "react-router-dom"
 import {useMemo} from "react";
+import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
 
 
 export default function Home() {
@@ -51,10 +52,6 @@ export default function Home() {
         return result;
     }, [books, filter, sort]);
 
-    function determineSortArrow() {
-        return sort.value === "asc" ? "▲" : "▼";
-    }
-
     return (
         <div className="overflow-x-auto">
             <table className="table table-xs table-pin-rows table-pin-cols">
@@ -67,7 +64,7 @@ export default function Home() {
                                 type: "title",
                                 value: prev.type === "title" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Title {sort.type === "title" ? determineSortArrow() : ""}</td>
+                        }>Title {sort.type === "title" ? <DetermineSortArrow /> : ""}</td>
                     <td
                         className="cursor-pointer"
                         onClick={() =>
@@ -75,7 +72,7 @@ export default function Home() {
                                 type: "author",
                                 value: prev.type === "author" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Author {sort.type === "author" ? determineSortArrow() : ""}
+                        }>Author {sort.type === "author" ? <DetermineSortArrow /> : ""}
                     </td>
                     <td
                         className="cursor-pointer"
@@ -84,7 +81,7 @@ export default function Home() {
                                 type: "pages",
                                 value: prev.type === "pages" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Pages {sort.type === "pages" ? determineSortArrow() : ""}
+                        }>Pages {sort.type === "pages" ? <DetermineSortArrow /> : ""}
                     </td>
                     <td
                         className="cursor-pointer"
@@ -93,7 +90,7 @@ export default function Home() {
                                 type: "genre",
                                 value: prev.type === "genre" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Genre {sort.type === "genre" ? determineSortArrow() : ""}
+                        }>Genre {sort.type === "genre" ? <DetermineSortArrow /> : ""}
                     </td>
                     <th></th>
                 </tr>
