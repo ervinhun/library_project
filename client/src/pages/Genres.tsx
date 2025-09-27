@@ -34,13 +34,14 @@ export function Genres() {
                 }))
             }
         >
-            Genres {sort.type === "author" ? <DetermineSortArrow /> : ""}
+            Genres {sort.type === "author" ? <DetermineSortArrow/> : ""}
         </button>;
     }
 
     return <>
         {getSort()}
         <table className="table table-zebra ml-10">
+            <tbody>
             {sortedAuthors.map((a) => (
                 <tr key={a.id}>
                     <th className="text-left">
@@ -56,9 +57,10 @@ export function Genres() {
                         </button>
                     </th>
                     <th>Edit</th>
-                    <th >Delete</th>
+                    <th>Delete</th>
                 </tr>
             ))}
+            </tbody>
         </table>
     </>
 }

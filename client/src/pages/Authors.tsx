@@ -33,14 +33,14 @@ export function Authors() {
                 }))
             }
         >
-            Authors {sort.type === "author" ? <DetermineSortArrow /> : ""}
+            Authors {sort.type === "author" ? <DetermineSortArrow/> : ""}
         </button>;
     }
 
     return <>
         {getSort()}
         <table className="table table-zebra ml-10">
-
+            <tbody>
             {sortedAuthors.map((a) => (
                 <tr className="mt-4 space-y-2 ml-10" key={a.id}>
                     <th>
@@ -59,7 +59,7 @@ export function Authors() {
                     <th>Delete</th>
                 </tr>
             ))}
-
+            </tbody>
         </table>
     </>
 }
