@@ -6,7 +6,7 @@ import {useMemo} from "react";
 
 export default function Home() {
 
-    const [books, ] = useAtom(BookAtom);
+    const [books,] = useAtom(BookAtom);
     const [sort, setSort] = useAtom(SortingAtom);
     const [filter, setFilter] = useAtom(FilterAtom);
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function Home() {
             }
         }
 
-// Apply sorting on filtered result
+        // Apply sorting on filtered result
         if (sort.type === "title") {
             result.sort((a, b) =>
                 sort.value === "asc" ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
@@ -63,14 +63,38 @@ export default function Home() {
                     <td
                         className="cursor-pointer"
                         onClick={() =>
-                        setSort((prev) => ({
-                            type: "title",
-                            value: prev.type === "title" && prev.value === "asc" ? "desc" : "asc",
-                        }))
-                    }>Title {sort.type === "title" ? determineSortArrow() : ""}</td>
-                    <td>Author</td>
-                    <td>Pages</td>
-                    <td>Genre</td>
+                            setSort((prev) => ({
+                                type: "title",
+                                value: prev.type === "title" && prev.value === "asc" ? "desc" : "asc",
+                            }))
+                        }>Title {sort.type === "title" ? determineSortArrow() : ""}</td>
+                    <td
+                        className="cursor-pointer"
+                        onClick={() =>
+                            setSort((prev) => ({
+                                type: "author",
+                                value: prev.type === "author" && prev.value === "asc" ? "desc" : "asc",
+                            }))
+                        }>Author {sort.type === "author" ? determineSortArrow() : ""}
+                    </td>
+                    <td
+                        className="cursor-pointer"
+                        onClick={() =>
+                            setSort((prev) => ({
+                                type: "pages",
+                                value: prev.type === "pages" && prev.value === "asc" ? "desc" : "asc",
+                            }))
+                        }>Pages {sort.type === "pages" ? determineSortArrow() : ""}
+                    </td>
+                    <td
+                        className="cursor-pointer"
+                        onClick={() =>
+                            setSort((prev) => ({
+                                type: "genre",
+                                value: prev.type === "genre" && prev.value === "asc" ? "desc" : "asc",
+                            }))
+                        }>Genre {sort.type === "genre" ? determineSortArrow() : ""}
+                    </td>
                     <th></th>
                 </tr>
                 </thead>
@@ -90,7 +114,7 @@ export default function Home() {
                                             className="text-blue-500 hover:underline mr-1"
                                             onClick={(e) => {
                                                 e.stopPropagation(); // prevent row navigation
-                                                setFilter({ type: "author", id: a.id, value: a.name });   // set author filter
+                                                setFilter({type: "author", id: a.id, value: a.name});   // set author filter
                                             }}
                                         >
                                             {a.name}
@@ -112,7 +136,7 @@ export default function Home() {
                                     className="text-blue-500 hover:underline"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setFilter({ type: "genre", id: b.genre.id, value: b.genre.name }); // set genre filter
+                                        setFilter({type: "genre", id: b.genre.id, value: b.genre.name}); // set genre filter
                                     }}
                                 >
                                     {b.genre.name}
