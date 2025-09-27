@@ -1,16 +1,29 @@
 import {useAtom} from "jotai";
-import {BookAtom} from "./Atom.ts";
-import {useEffect} from "react";
+import {AuthorAtom, BookAtom, GenreAtom} from "./Atom.ts";
+import {useEffect, useState} from "react";
+import {API_ENDPOINTS} from "./config/api.ts";
 
 export default function InitializeData() {
     const [, setAllBooks] = useAtom(BookAtom);
+    const [, setAllAuthors] = useAtom(AuthorAtom);
+    const [, setAllGenres] = useAtom(GenreAtom);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Use API URL from environment variable, fallback to default if not set
-        const apiUrl = process.env.REACT_APP_API_URL || 'https://server-nameless-star-9223.fly.dev/GetAllBooks';
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => setAllBooks(data))
-            .catch(error => console.error('Error fetching data:', error))
+        Promise.all([
+            fetch(API_ENDPOINTS.books).then((r) => r.json()),
+            fetch(API_ENDPOINTS.authors).then((r) => r.json()),
+            fetch(API_ENDPOINTS.genres).then((r) => r.json()),
+        ])
+            .then(([books, authors, genres]) => {
+                setAllBooks(books);
+                setAllAuthors(authors);
+                setAllGenres(genres);
+            })
+            .catch((error) => console.error("Error fetching initial data:", error))
+            .finally(() => setLoading(false));
     }, []);
+
+
+    return loading;
 }

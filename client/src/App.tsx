@@ -1,23 +1,27 @@
 import Home from './pages/Home'
 import './index.css'
 import InitializeData from "./InitializeData.tsx";
-import {createBrowserRouter, type RouteObject, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import Layout from "./pages/structure/Layout.tsx";
 
-const myRoutes: RouteObject[] = [
+const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home/>
+        element: <Layout />,   // 👈 Wrap all routes with Layout
+        children: [
+            { path: "/", element: <Home /> },
+            { path: "/authors", element: <p>Authors page</p> },
+            { path: "/genres", element: <p>Genres page</p>},
+            { path: "/book/:id", element: <p>Book detail</p>},
+            { path: "/authors/:id", element: <p>Author detail</p>},
+            { path: "/genres/:id", element: <p>Genre detail</p> },
+        ],
     },
-    /*
-    {
-        path: "/book/:id",
-        element: <BookDetail/>
-    }*/
-]
+]);
 
 function App() {
     InitializeData();
-    return <RouterProvider router={createBrowserRouter(myRoutes)}/>
+    return <RouterProvider router={router}/>
 }
 
 export default App
