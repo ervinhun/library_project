@@ -108,7 +108,7 @@ export default function Home() {
                                     b.authors.map((a) => (
                                         <button
                                             key={a.id}
-                                            className="text-blue-500 hover:underline mr-1"
+                                            className="text-blue-100 hover:underline mr-1"
                                             onClick={(e) => {
                                                 e.stopPropagation(); // prevent row navigation
                                                 setFilter({type: "author", id: a.id, value: a.name});   // set author filter
@@ -130,7 +130,7 @@ export default function Home() {
                         <td>
                             <p>
                                 <button
-                                    className="text-blue-500 hover:underline"
+                                    className="text-blue-100 hover:underline"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setFilter({type: "genre", id: b.genre.id, value: b.genre.name}); // set genre filter

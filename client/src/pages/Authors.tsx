@@ -1,13 +1,16 @@
 import {useAtom} from "jotai";
-import {AuthorAtom, FilterAtom, SortingAtom} from "../Atom.ts";
+import {AuthorAtom, FilterAtom} from "../Atom.ts";
 import {useNavigate} from "react-router-dom";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
 
 export function Authors() {
     const [getAuthors] = useAtom(AuthorAtom);
     const [, setFilter] = useAtom(FilterAtom);
-    const [sort, setSort] = useAtom(SortingAtom);
+    const [sort, setSort] = useState<{ type: "author"; value: "asc" | "desc" }>({
+        type: "author",
+        value: "asc",
+    });
     const navigate = useNavigate();
 
     const sortedAuthors = useMemo(() => {

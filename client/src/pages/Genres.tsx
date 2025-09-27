@@ -1,18 +1,21 @@
 import {useAtom} from "jotai";
-import {FilterAtom, GenreAtom, SortingAtom} from "../Atom.ts";
+import {FilterAtom, GenreAtom} from "../Atom.ts";
 import {useNavigate} from "react-router-dom";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
 
 export function Genres() {
     const [getGenres] = useAtom(GenreAtom);
     const [, setFilter] = useAtom(FilterAtom);
-    const [sort, setSort] = useAtom(SortingAtom);
+    const [sort, setSort] = useState<{ type: "genres"; value: "asc" | "desc" }>({
+        type: "genres",
+        value: "asc",
+    });
     const navigate = useNavigate();
 
     const sortedAuthors = useMemo(() => {
         const result = [...getGenres];
-        if (sort.type === "author") {
+        if (sort.type === "genres") {
             result.sort((a, b) =>
                 sort.value === "asc"
                     ? a.name.localeCompare(b.name)
@@ -29,12 +32,12 @@ export function Genres() {
             className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0 ml-10 font-bold text-xl"
             onClick={() =>
                 setSort((prev) => ({
-                    type: "author",
-                    value: prev.type === "author" && prev.value === "asc" ? "desc" : "asc",
+                    type: "genres",
+                    value: prev.type === "genres" && prev.value === "asc" ? "desc" : "asc",
                 }))
             }
         >
-            Genres {sort.type === "author" ? <DetermineSortArrow/> : ""}
+            Genres {sort.type === "genres" ? <DetermineSortArrow/> : ""}
         </button>;
     }
 
