@@ -42,7 +42,7 @@ export default function Header() {
                             Author
                         </li>
                         <li className="py-1">
-                        Genre
+                            Genre
                         </li>
                     </ul>
                 </div>

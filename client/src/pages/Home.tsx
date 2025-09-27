@@ -112,7 +112,7 @@ export default function Home() {
                                     className="text-blue-500 hover:underline"
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setFilter({ type: "genre", id: b.genreid, value: b.genre.name }); // set genre filter
+                                        setFilter({ type: "genre", id: b.genre.id, value: b.genre.name }); // set genre filter
                                     }}
                                 >
                                     {b.genre.name}

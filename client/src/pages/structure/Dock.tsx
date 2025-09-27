@@ -10,7 +10,7 @@ export default function Dock() {
                     `dock-button ${isActive ? "dock-active" : ""}`
                 }
             >
-                <img src = "https://img.icons8.com/?size=100&id=14096&format=png&color=000000"
+                <img src="https://img.icons8.com/?size=100&id=14096&format=png&color=000000"
                      alt="Home"
                      className="dock-icon size-[1.7em]"/>
                 <span className="dock-label">Home</span>
@@ -25,7 +25,7 @@ export default function Dock() {
                 <img src="https://img.icons8.com/?size=100&id=14312&format=png&color=000000"
                      alt="Author"
                      className="dock-icon size-[1.7em]"/>
-                <span className="dock-label"> Author</span>
+                <span className="dock-label">Author</span>
             </NavLink>
 
             <NavLink
@@ -37,7 +37,7 @@ export default function Dock() {
                 <img src="https://img.icons8.com/?size=100&id=mtJxvLzdC_x2&format=png&color=000000"
                      alt="Genre"
                      className="dock-icon size-[1.7em]"/>
-                <span className="dock-label"> Genre</span>
+                <span className="dock-label">Genre</span>
             </NavLink>
         </div>
     )
