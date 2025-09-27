@@ -10,7 +10,7 @@ export default function Dock() {
                     `dock-button ${isActive ? "dock-active" : ""}`
                 }
             >
-                <img src="https://img.icons8.com/?size=100&id=14096&format=png&color=000000"
+                <img src="https://img.icons8.com/?size=100&id=14096&format=png&color=f3f4f6"
                      alt="Home"
                      className="dock-icon size-[1.7em]"/>
                 <span className="dock-label">Home</span>
@@ -22,7 +22,7 @@ export default function Dock() {
                     `dock-button ${isActive ? "dock-active" : ""}`
                 }
             >
-                <img src="https://img.icons8.com/?size=100&id=14312&format=png&color=000000"
+                <img src="https://img.icons8.com/?size=100&id=14312&format=png&color=f3f4f6"
                      alt="Author"
                      className="dock-icon size-[1.7em]"/>
                 <span className="dock-label">Author</span>
@@ -34,7 +34,7 @@ export default function Dock() {
                     `dock-button ${isActive ? "dock-active" : ""}`
                 }
             >
-                <img src="https://img.icons8.com/?size=100&id=mtJxvLzdC_x2&format=png&color=000000"
+                <img src="https://img.icons8.com/?size=100&id=mtJxvLzdC_x2&format=png&color=f3f4f6"
                      alt="Genre"
                      className="dock-icon size-[1.7em]"/>
                 <span className="dock-label">Genre</span>
