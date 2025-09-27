@@ -1,3 +1,6 @@
+import type {Author} from "./Author.ts";
+import type {Genre} from "./Genre.ts";
+
 export interface Book {
     id: string;
     title: string;
@@ -6,16 +9,4 @@ export interface Book {
     genreid: string;
     genre: Genre;
     authors: Author[];
-}
-
-export interface Author {
-    id: string;
-    name: string;
-    createdat: string;
-}
-
-export interface Genre {
-    id: string;
-    name: string;
-    createdAt: string;
 }
