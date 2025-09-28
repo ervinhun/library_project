@@ -3,6 +3,7 @@ import {FilterAtom, GenreAtom} from "../Atom.ts";
 import {useNavigate} from "react-router-dom";
 import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
+import Form from "./structure/Form.tsx";
 
 export function Genres() {
     const [getGenres] = useAtom(GenreAtom);
@@ -12,6 +13,8 @@ export function Genres() {
         value: "asc",
     });
     const navigate = useNavigate();
+    const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
+    const [editingId, setEditingId] = useState<string | undefined>(undefined);
 
     const sortedAuthors = useMemo(() => {
         const result = [...getGenres];
@@ -42,12 +45,21 @@ export function Genres() {
     }
 
     return <>
+        <Form
+            formType={openForm}
+            publicId={editingId}
+            open={openForm !== null}
+            onClose={() => {
+                setForm(null);
+                setEditingId(undefined);
+            }}
+        />
         {getSort()}
         <table className="table table-zebra ml-10">
             <tbody>
             {sortedAuthors.map((a) => (
                 <tr key={a.id}>
-                    <th className="text-left">
+                    <th className="text-left w-3/4">
                         <button
                             type="button"
                             className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
@@ -59,7 +71,18 @@ export function Genres() {
                             {a.name}
                         </button>
                     </th>
-                    <th>Edit</th>
+                    <th>
+                        <button
+                            type="button"
+                            className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                            onClick={() => {
+                                setForm("genre");
+                                setEditingId(a.id);
+                            }}
+                        >
+                            Edit
+                        </button>
+                    </th>
                     <th>Delete</th>
                 </tr>
             ))}

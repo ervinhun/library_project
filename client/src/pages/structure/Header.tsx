@@ -1,10 +1,13 @@
 import bookImage from "../../assets/books.png"
 import {useAtom} from "jotai";
 import {FilterAtom} from "../../Atom.ts";
+import {useState} from "react";
+import Form from "./Form.tsx";
 
 export default function Header() {
 
     const [filter, setFilter] = useAtom(FilterAtom);
+    const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
 
 
     function getTitle() {
@@ -36,17 +39,29 @@ export default function Header() {
                         className="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-40 mt-2"
                     >
                         <li className="py-1">
-                            Book
+                            <a onClick={() => setForm("book")}>
+                                Book
+                            </a>
                         </li>
                         <li className="py-1">
-                            Author
+                            <a onClick={() => setForm("author")}>
+                                Author
+                            </a>
                         </li>
                         <li className="py-1">
-                            Genre
+                            <a onClick={() => setForm("genre")}>
+                                Genre
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
+            {/* Slide-in Form */}
+            <Form
+                formType={openForm}
+                open={openForm !== null}
+                onClose={() => setForm(null)}
+            />
         </>;
     }
 

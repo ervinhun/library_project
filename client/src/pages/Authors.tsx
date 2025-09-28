@@ -3,6 +3,9 @@ import {AuthorAtom, FilterAtom} from "../Atom.ts";
 import {useNavigate} from "react-router-dom";
 import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
+import Form from "./structure/Form.tsx";
+
+
 
 export function Authors() {
     const [getAuthors] = useAtom(AuthorAtom);
@@ -12,6 +15,9 @@ export function Authors() {
         value: "asc",
     });
     const navigate = useNavigate();
+    const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
+    const [editingId, setEditingId] = useState<string | undefined>(undefined);
+
 
     const sortedAuthors = useMemo(() => {
         const result = [...getAuthors];
@@ -24,6 +30,8 @@ export function Authors() {
         }
         return result;
     }, [getAuthors, sort]);
+
+
 
     function getSort() {
         return <button
@@ -40,13 +48,24 @@ export function Authors() {
         </button>;
     }
 
+
+
     return <>
+        <Form
+            formType={openForm}
+            publicId={editingId}
+            open={openForm !== null}
+            onClose={() => {
+                setForm(null);
+                setEditingId(undefined);
+            }}
+        />
         {getSort()}
         <table className="table table-zebra ml-10">
             <tbody>
             {sortedAuthors.map((a) => (
                 <tr className="mt-4 space-y-2 ml-10" key={a.id}>
-                    <th>
+                    <th className="text-left w-3/4">
                         <button
                             type="button"
                             className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
@@ -58,7 +77,15 @@ export function Authors() {
                             {a.name}
                         </button>
                     </th>
-                    <th>Edit</th>
+                    <th><button type="button"
+                                className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                                onClick={() => {
+                                    setForm("author");
+                                    setEditingId(a.id);
+                                }}>
+                        Edit
+                    </button>
+                    </th>
                     <th>Delete</th>
                 </tr>
             ))}
