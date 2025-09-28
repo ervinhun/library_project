@@ -1,9 +1,8 @@
+using Api;
 using api.Etc;
 using Api.Services;
 using dataaccess;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using Api;
 
 namespace api;
 
@@ -16,12 +15,13 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseOpenApi();
-        app.UseSwaggerUi(config => { config.Path = String.Empty; });
         app.UseCors("FrontendPolicy");
+        app.UseHttpsRedirection();
+        app.UseSwaggerUi(config => { config.Path = String.Empty; });
+        app.UseAuthorization();
         app.MapControllers();
-        app.GenerateApiClientsFromOpenApi("/../../client/src/models/generated-client.ts").GetAwaiter().GetResult();
         app.Run();
+
     }
 
     public static void ConfigurationService(IServiceCollection services, ConfigurationManager builderConfiguration)
