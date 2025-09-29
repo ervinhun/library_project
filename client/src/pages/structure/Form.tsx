@@ -222,7 +222,7 @@ export default function Form({
         <>
             <div className="fixed inset-0 bg-opacity-50 z-40" onClick={onClose}/>
             <div
-                className="fixed top-0 right-0 h-full w-full md:w-1/3 bg-base-100 z-50 shadow-lg overflow-auto"
+                className="fixed top-0 right-0 h-full w-full md:w-1/3 bg-base-100 z-50 shadow-lg overflow-auto rounded-box p-2 border border-b-primary-content"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center p-4 border-b">
@@ -241,6 +241,7 @@ export default function Form({
                             <input
                                 className="input input-bordered w-full"
                                 placeholder="Name"
+                                autoFocus
                                 value={
                                     formType === "author"
                                         ? selectedAuthors[0]?.name ?? ""
@@ -269,6 +270,7 @@ export default function Form({
                                 className="input input-bordered w-full"
                                 placeholder="Book title"
                                 value={title}
+                                autoFocus
                                 onChange={(e) => setTitle(e.target.value)}
                             />
 
@@ -283,7 +285,7 @@ export default function Form({
 
                             <label className="block text-sm font-medium">Genre</label>
 
-                            <div className="dropdown" onClick={(e) => e.stopPropagation()}>
+                            <div className="dropdown dropdown-right" onClick={(e) => e.stopPropagation()}>
                                 <button
                                     type="button"
                                     className="btn m-1"
@@ -292,7 +294,7 @@ export default function Form({
                                     {selectedGenre?.name || "Select genre"}
                                 </button>
                                 {dropdownOpen && (
-                                    <ul className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                    <ul className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm border border-b-primary-content">
                                         {genres
                                             .slice()
                                             .sort((a, b) => a.name.localeCompare(b.name))

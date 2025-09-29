@@ -3,6 +3,7 @@ import {useAtom} from "jotai";
 import {FilterAtom} from "../../Atom.ts";
 import {useState} from "react";
 import Form from "./Form.tsx";
+import {useLocation} from "react-router-dom";
 
 export default function Header() {
 
@@ -100,16 +101,20 @@ export default function Header() {
     }
 
     function getFilterIndication() {
+        const location = useLocation();
+
+        if (location.pathname !== "/") { return null; }
+
         return <>
             {filter && (
                 <code className="p-2 rounded-md">
                     <div className="flex items-center space-x-2 mt-2 text-sm bg-accent-content px-2 py-1">
-                            <span className=" text-gray-100 rounded">
+                            <span className=" text-accent rounded">
                               {filter.type === "author" ? "Author: " : "Genre: "}
                                 {filter.value}
                             </span>
                         <button
-                            className="text-red-500 font-bold"
+                            className="text-red-500 font-bold cursor-pointer"
                             onClick={() => setFilter(null)}
                         >
                             ×
