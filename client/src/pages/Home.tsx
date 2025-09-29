@@ -54,7 +54,7 @@ export default function Home() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table table-xs table-pin-rows table-pin-cols">
+            <table className="table table-xs table-pin-rows table-pin-cols ml-10 table-zebra">
                 <thead>
                 <tr>
                     <td

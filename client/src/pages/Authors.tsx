@@ -80,17 +80,17 @@ export function Authors() {
                     </th>
                     <th>
                         <button type="button"
-                                className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                                 onClick={() => {
                                     setForm("author");
                                     setEditingId(a.id);
                                 }}>
-                            Edit
+                            ✎
                         </button>
                     </th>
                     <th>
                         <button type="button"
-                                className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                                 onClick={() => confirmAndDelete(
                                     client,
                                     a.id,
@@ -99,7 +99,7 @@ export function Authors() {
                                     setFilter,
                                     setAuthors
                                 )}>
-                            Delete
+                            🗑
                         </button>
                     </th>
                 </tr>

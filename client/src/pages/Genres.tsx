@@ -79,18 +79,18 @@ export function Genres() {
                     <th>
                         <button
                             type="button"
-                            className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
+                            className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                             onClick={() => {
                                 setForm("genre");
                                 setEditingId(a.id);
                             }}
                         >
-                            Edit
+                            ✎
                         </button>
                     </th>
                     <th>
                         <button type="button"
-                                className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                                 onClick={() => confirmAndDelete(
                                     client,
                                     a.id,
@@ -100,7 +100,7 @@ export function Genres() {
                                     undefined,
                                     setGenres
                                 )}>
-                            Delete
+                            🗑
                         </button>
                     </th>
                 </tr>
