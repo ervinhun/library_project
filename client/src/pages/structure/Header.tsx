@@ -23,7 +23,7 @@ export default function Header() {
                     className="w-16 h-16 object-cover"
                 />
                 <h1 className="text-4xl md:text-6xl font-bold text-default-400">
-                    Library - Ervin
+                    e-Library
                 </h1>
             </div>
         </>;
