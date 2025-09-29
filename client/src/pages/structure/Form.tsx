@@ -294,28 +294,29 @@ export default function Form({
                                     {selectedGenre?.name || "Select genre"}
                                 </button>
                                 {dropdownOpen && (
-                                    <ul className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm border border-b-primary-content">
-                                        {genres
-                                            .slice()
-                                            .sort((a, b) => a.name.localeCompare(b.name))
-                                            .map((genre) => (
-                                                <li key={genre.id}>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setSelectedGenre(genre);
-                                                            setDropdownOpen(false); // closes dropdown without closing form
-                                                        }}
-                                                    >
-                                                        {genre.name}
-                                                    </button>
-                                                </li>
-                                            ))}
-                                    </ul>
+                                    <div
+                                        className="dropdown-content z-50 w-52 bg-base-100 rounded-box shadow-sm border border-b-primary-content max-h-90 overflow-y-auto">
+                                        <ul className="menu p-2">
+                                            {genres
+                                                .slice()
+                                                .sort((a, b) => a.name.localeCompare(b.name))
+                                                .map((genre) => (
+                                                    <li key={genre.id}>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                setSelectedGenre(genre);
+                                                                setDropdownOpen(false); // closes dropdown without closing form
+                                                            }}
+                                                        >
+                                                            {genre.name}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                        </ul>
+                                    </div>
                                 )}
                             </div>
-
-
 
 
                             <label className="block text-sm font-medium">Authors</label>

@@ -4,7 +4,6 @@ import {FilterAtom} from "../../Atom.ts";
 import {useState} from "react";
 import Form from "./Form.tsx";
 import {useLocation} from "react-router-dom";
-import ThemeToggle from "../../config/ThemeTogle.tsx";
 
 export default function Header() {
 
