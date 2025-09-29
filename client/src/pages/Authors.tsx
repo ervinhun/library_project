@@ -1,12 +1,11 @@
 import {useAtom} from "jotai";
 import {AuthorAtom, FilterAtom} from "../Atom.ts";
-import {useNavigate} from "react-router-dom";
 import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
 import Form from "./structure/Form.tsx";
-import {LibraryClient} from "../models/generated-client.ts";
-import {API_BASE_URL} from "../config/api.ts";
-
+import {client} from "../config/client.ts";
+import {DELETE_ENDPOINTS} from "../config/api.ts";
+import {confirmAndDelete} from "./structure/HandleDelete.tsx";
 
 
 export function Authors() {
@@ -16,10 +15,8 @@ export function Authors() {
         type: "author",
         value: "asc",
     });
-    const navigate = useNavigate();
     const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
     const [editingId, setEditingId] = useState<string | undefined>(undefined);
-    const client = new LibraryClient(API_BASE_URL);
 
 
     const sortedAuthors = useMemo(() => {
@@ -33,7 +30,6 @@ export function Authors() {
         }
         return result;
     }, [getAuthors, sort]);
-
 
 
     function getSort() {
@@ -50,7 +46,6 @@ export function Authors() {
             Authors {sort.type === "author" ? <DetermineSortArrow/> : ""}
         </button>;
     }
-
 
 
     return <>
@@ -72,37 +67,40 @@ export function Authors() {
                         <button
                             type="button"
                             className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
-                            onClick={() => {
-                                setFilter({type: "author", id: a.id, value: a.name});
-                                navigate("/");
-                            }}
+                            onClick={() => confirmAndDelete(
+                                client,
+                                a.id,
+                                a.name,
+                                DELETE_ENDPOINTS.author,
+                                setFilter,
+                                setAuthors)}
                         >
                             {a.name}
                         </button>
                     </th>
-                    <th><button type="button"
+                    <th>
+                        <button type="button"
                                 className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
                                 onClick={() => {
                                     setForm("author");
                                     setEditingId(a.id);
                                 }}>
-                        Edit
-                    </button>
+                            Edit
+                        </button>
                     </th>
-                    <th><button type="button"
+                    <th>
+                        <button type="button"
                                 className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
-                                onClick={() => {
-                                    if (window.confirm(`Are you sure you want to delete "${a.name}"?`)) {
-                                        client.deleteAuthor(a.id)
-                                            .then(() => {
-                                                setFilter(null);
-                                                setAuthors(prev => prev.filter(aa => aa.id !== a.id));
-                                            })
-                                            .catch(console.error);
-                                    }
-                                }}>
-                        Delete
-                    </button>
+                                onClick={() => confirmAndDelete(
+                                    client,
+                                    a.id,
+                                    a.name,
+                                    DELETE_ENDPOINTS.author,
+                                    setFilter,
+                                    setAuthors
+                                )}>
+                            Delete
+                        </button>
                     </th>
                 </tr>
             ))}

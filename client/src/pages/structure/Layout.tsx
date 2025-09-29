@@ -18,7 +18,7 @@ export default function Layout() {
             <div className="app-header">
                 <Header />
             </div>
-            <div className="app-content">
+            <div className="app-content mb-20">
                <Outlet />
             </div>
             <Dock />

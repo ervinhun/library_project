@@ -4,13 +4,13 @@ import {useEffect, useState} from "react";
 import type {Genre} from "../../models/Genre.ts";
 import type {Book} from "../../models/Book.ts";
 import type {Author} from "../../models/Author.ts";
-import {API_BASE_URL} from "../../config/api.ts";
 import {
     type AuthorRequestDto,
     type AuthorResponseDto,
     type GenreRequestDto,
-    LibraryClient
+    type GenreResponseDto
 } from "../../models/generated-client.ts";
+import {client} from "../../config/client.ts";
 
 type SlideInFormProps = {
     formType: "book" | "author" | "genre" | null;
@@ -25,20 +25,20 @@ export default function Form({
                                  open,
                                  onClose,
                              }: Readonly<SlideInFormProps>) {
-    const [books] = useAtom(BookAtom);
+    const [books, setBooks] = useAtom(BookAtom);
     const [authors, setAuthors] = useAtom(AuthorAtom);
     const [genres, setGenres] = useAtom(GenreAtom);
 
     const [selectedAuthors, setSelectedAuthors] = useState<Author[]>([]);
     const [selectedGenre, setSelectedGenre] = useState<Genre | null>(null);
-    const [, setSelectedBook] = useState<Book | null>(null);
+    const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
     const [title, setTitle] = useState("");
     const [pages, setPages] = useState<number>(0);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
     const editing = !!publicId;
-    const client = new LibraryClient(API_BASE_URL);
-
 
     // Reset form state
     const resetForm = () => {
@@ -98,28 +98,26 @@ export default function Form({
         switch (formType) {
             case "author": {
                 if (!editing) {
-                    const dto : AuthorResponseDto = await client.addAuthor(selectedAuthors?.[0].name ?? "");
+                    const dto: AuthorResponseDto = await client.addAuthor(selectedAuthors?.[0].name ?? "");
                     const newAuthor: Author = {
                         id: dto.id!,
                         name: dto.name ?? "",
                         createdat: dto.createdat ?? new Date().toISOString()
                     };
                     setAuthors(prev => [...prev, newAuthor]);
+                } else {
+                    const dto: AuthorRequestDto = {id: selectedAuthors?.[0].id, name: selectedAuthors?.[0].name ?? ""};
+                    await client.updateAuthor(dto);
+
+                    const updatedAuthor: Author = {
+                        id: dto.id ?? "",
+                        name: dto.name ?? "",
+                        createdat: new Date().toUTCString() ?? new Date().toISOString()
+                    };
+
+                    setAuthors(prev => prev.map(a => a.id === updatedAuthor.id ? updatedAuthor : a));
+
                 }
-                else
-                    {
-                        const dto: AuthorRequestDto = { id: selectedAuthors?.[0].id, name: selectedAuthors?.[0].name ?? "" };
-                        await client.updateAuthor(dto);
-
-                        const updatedAuthor: Author = {
-                            id: dto.id ?? "",
-                            name: dto.name ?? "",
-                            createdat: new Date().toUTCString() ?? new Date().toISOString()
-                        };
-
-                        setAuthors(prev => prev.map(a => a.id === updatedAuthor.id ? updatedAuthor : a));
-
-                    }
                 break;
             }
 
@@ -132,10 +130,8 @@ export default function Form({
                         createdAt: newGenreDto.createdat ?? new Date().toISOString()
                     };
                     setGenres(prev => [...prev, newGenre]);
-                }
-                else
-                {
-                    const dto: GenreRequestDto = { id: selectedGenre?.id, name: selectedGenre?.name ?? "" };
+                } else {
+                    const dto: GenreRequestDto = {id: selectedGenre?.id, name: selectedGenre?.name ?? ""};
                     await client.updateGenre(dto);
                     const updatedGenre: Genre = {
                         id: dto.id!,
@@ -149,28 +145,72 @@ export default function Form({
             }
 
             case "book": {
-                const payload = {
-                    id: editing ? publicId : undefined,
-                    title,
-                    pages,
-                    genreId: selectedGenre?.id,
-                    authorIds: selectedAuthors.map((a) => a.id),
-                };
+                if (!title || pages <= 0 || !selectedGenre) {
+                    alert("Please fill out all the necessary fields - title, pages, genre.");
+                    return;
+                }
+                if (!editing) {
 
-                const url = editing
-                    ? `/swagger/books/${publicId}`
-                    : `/swagger/books`;
-                const method = editing ? "PUT" : "POST";
+                    const bookDto = {
+                        title,
+                        pages,
+                        genreid: selectedGenre.id,
+                    };
 
-                const res = await fetch(url, {
-                    method,
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(payload),
-                });
+                    const newBookResponse = await client.addBook(bookDto)
+                    const bookToAdd: Book = {
+                        id: newBookResponse.id!,
+                        title: newBookResponse.title ?? "",
+                        pages: newBookResponse.pages ?? 0,
+                        genreid: newBookResponse.genreid ?? "",
+                        genre: genres.find(g => g.id === newBookResponse.genreid)
+                            ?? {id: "", name: "Unknown", createdAt: new Date().toISOString()},
+                        authors: [],
+                        createdat: newBookResponse.createdat ?? new Date().toISOString()
+                    }
+                    setBooks((prev) => [...prev, bookToAdd]);
 
-                if (!res.ok) throw new Error("Failed to save book");
-                // optional: update books state if needed
-                break;
+                    if (selectedAuthors.length > 0) {
+                        selectedAuthors.forEach(a => bookToAdd.authors.push(a));
+                        await client.updateBook(bookToAdd);
+                    }
+                } else {
+                    if (!publicId) {
+                        alert("Missing book ID for editing.");
+                        return;
+                    }
+                    const genreDto: GenreResponseDto = {
+                        id: selectedGenre.id,
+                        name: selectedGenre.name,
+                        createdat: selectedGenre.createdAt
+                    }
+                    const authorsDto: AuthorResponseDto[] = selectedAuthors.map(a => ({
+                        id: a.id,
+                        name: a.name,
+                        createdat: a.createdat
+                    }));
+
+                    const dto = {
+                        id: selectedBook?.id ?? publicId,
+                        title,
+                        pages,
+                        genreid: selectedGenre.id,
+                        genre: genreDto ?? undefined,
+                        authors: authorsDto ?? undefined
+                    };
+                    await client.updateBook(dto);
+                    const updatedBook: Book = {
+                        id: dto.id ?? "",
+                        title: dto.title ?? "",
+                        pages: dto.pages ?? 0,
+                        genreid: dto.genreid ?? "",
+                        genre: selectedGenre,
+                        authors: selectedAuthors,
+                        createdat: new Date().toUTCString() ?? new Date().toISOString()
+                    };
+
+                    setBooks(prev => prev.map(b => b.id === updatedBook.id ? updatedBook : b));
+                }
             }
         }
         onClose();
@@ -189,7 +229,7 @@ export default function Form({
                     <h2 className="text-xl font-bold">
                         {editing ? "Edit" : "New"} {formType}
                     </h2>
-                    <button className="text-red-500 font-bold" onClick={onClose}>
+                    <button type="button" className="text-red-500 font-bold cursor-pointer" onClick={onClose}>
                         ✕
                     </button>
                 </div>
@@ -242,21 +282,39 @@ export default function Form({
                             />
 
                             <label className="block text-sm font-medium">Genre</label>
-                            <div className="dropdown">
-                                <label tabIndex={0} className="btn m-1">
-                                    {selectedGenre?.name || "Select genre"}
-                                </label>
-                                <ul
-                                    tabIndex={0}
-                                    className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+
+                            <div className="dropdown" onClick={(e) => e.stopPropagation()}>
+                                <button
+                                    type="button"
+                                    className="btn m-1"
+                                    onClick={() => setDropdownOpen(!dropdownOpen)}
                                 >
-                                    {genres.map((genre) => (
-                                        <li key={genre.id}>
-                                            <a onClick={() => setSelectedGenre(genre)}>{genre.name}</a>
-                                        </li>
-                                    ))}
-                                </ul>
+                                    {selectedGenre?.name || "Select genre"}
+                                </button>
+                                {dropdownOpen && (
+                                    <ul className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                        {genres
+                                            .slice()
+                                            .sort((a, b) => a.name.localeCompare(b.name))
+                                            .map((genre) => (
+                                                <li key={genre.id}>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setSelectedGenre(genre);
+                                                            setDropdownOpen(false); // closes dropdown without closing form
+                                                        }}
+                                                    >
+                                                        {genre.name}
+                                                    </button>
+                                                </li>
+                                            ))}
+                                    </ul>
+                                )}
                             </div>
+
+
+
 
                             <label className="block text-sm font-medium">Authors</label>
                             <div className="space-y-2">

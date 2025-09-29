@@ -5,6 +5,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Layout from "./pages/structure/Layout.tsx";
 import {Authors} from "./pages/Authors.tsx";
 import {Genres} from "./pages/Genres.tsx";
+import BookDetail from "./pages/BookDetail.tsx";
 
 const router = createBrowserRouter([
     {
@@ -14,9 +15,7 @@ const router = createBrowserRouter([
             { path: "/", element: <Home /> },
             { path: "/authors", element: <Authors /> },
             { path: "/genres", element: <Genres />},
-            { path: "/book/:id", element: <p>Book detail</p>},
-            { path: "/authors/:id", element: <p>Author detail</p>},
-            { path: "/genres/:id", element: <p>Genre detail</p> },
+            { path: "/book/:id", element: <BookDetail />},
         ],
     },
 ]);

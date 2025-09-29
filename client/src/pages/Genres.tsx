@@ -5,7 +5,8 @@ import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
 import Form from "./structure/Form.tsx";
 import {LibraryClient} from "../models/generated-client.ts";
-import {API_BASE_URL} from "../config/api.ts";
+import {API_BASE_URL_PROD, DELETE_ENDPOINTS} from "../config/api.ts";
+import {confirmAndDelete} from "./structure/HandleDelete.tsx";
 
 export function Genres() {
     const [getGenres, setGenres] = useAtom(GenreAtom);
@@ -18,7 +19,7 @@ export function Genres() {
     const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
     const [editingId, setEditingId] = useState<string | undefined>(undefined);
 
-    const client = new LibraryClient(API_BASE_URL);
+    const client = new LibraryClient(API_BASE_URL_PROD);
 
     const sortedAuthors = useMemo(() => {
         const result = [...getGenres];
@@ -90,15 +91,15 @@ export function Genres() {
                     <th>
                         <button type="button"
                                 className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
-                                onClick={() => {if (window.confirm("Are you sure you want to delete this item?")) {
-                                    client.deleteGenre(a.id)
-                                    .then(() => {
-                                    setFilter(null);
-                                    setGenres(prev => prev.filter(aa => aa.id !== a.id));
-                                })
-                                    .catch(console.error);
-                                }
-                                }}>
+                                onClick={() => confirmAndDelete(
+                                    client,
+                                    a.id,
+                                    a.name,
+                                    DELETE_ENDPOINTS.genre,
+                                    setFilter,
+                                    undefined,
+                                    setGenres
+                                )}>
                             Delete
                         </button>
                     </th>
