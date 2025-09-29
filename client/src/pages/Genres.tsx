@@ -37,7 +37,7 @@ export function Genres() {
     function getSort() {
         return <button
             type="button"
-            className="text-base cursor-pointer hover:underline bg-transparent border-none p-0 ml-10 font-bold text-xl"
+            className="cursor-pointer text-accent font-bold ml-13"
             onClick={() =>
                 setSort((prev) => ({
                     type: "genres",
@@ -60,7 +60,7 @@ export function Genres() {
             }}
         />
         {getSort()}
-        <table className="table table-zebra ml-10">
+        <table className="table table-zebra table-sm ml-10">
             <tbody>
             {sortedAuthors.map((a) => (
                 <tr key={a.id}>

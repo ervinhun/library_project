@@ -22,7 +22,7 @@ export default function InitializeData() {
             })
             .catch((error) => console.error("Error fetching initial data:", error))
             .finally(() => setLoading(false));
-    }, []);
+    }, [setAllBooks, setAllAuthors, setAllGenres]);
 
 
     return loading;

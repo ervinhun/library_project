@@ -10,6 +10,7 @@ export default function Header() {
     const [filter, setFilter] = useAtom(FilterAtom);
     const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const location = useLocation();
 
 
     function getTitle() {
@@ -102,7 +103,6 @@ export default function Header() {
     }
 
     function getFilterIndication() {
-        const location = useLocation();
 
         if (location.pathname !== "/") { return null; }
 
