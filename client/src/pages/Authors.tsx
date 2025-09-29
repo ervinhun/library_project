@@ -35,7 +35,7 @@ export function Authors() {
     function getSort() {
         return <button
             type="button"
-            className="text-accent cursor-pointer hover:underline bg-transparent border-none p-0 ml-10 font-bold text-xl"
+            className="text-base cursor-pointer hover:underline bg-transparent border-none p-0 ml-10 font-bold text-xl"
             onClick={() =>
                 setSort((prev) => ({
                     type: "author",
@@ -66,7 +66,7 @@ export function Authors() {
                     <th className="text-left w-3/4">
                         <button
                             type="button"
-                            className="text-accent cursor-pointer hover:underline bg-transparent border-none p-0"
+                            className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
                             onClick={() => confirmAndDelete(
                                 client,
                                 a.id,
@@ -80,7 +80,7 @@ export function Authors() {
                     </th>
                     <th>
                         <button type="button"
-                                className="text-accent cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
                                 onClick={() => {
                                     setForm("author");
                                     setEditingId(a.id);
@@ -90,7 +90,7 @@ export function Authors() {
                     </th>
                     <th>
                         <button type="button"
-                                className="text-accent cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
                                 onClick={() => confirmAndDelete(
                                     client,
                                     a.id,

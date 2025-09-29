@@ -4,6 +4,7 @@ import {FilterAtom} from "../../Atom.ts";
 import {useState} from "react";
 import Form from "./Form.tsx";
 import {useLocation} from "react-router-dom";
+import ThemeToggle from "../../config/ThemeTogle.tsx";
 
 export default function Header() {
 
@@ -14,6 +15,7 @@ export default function Header() {
 
     function getTitle() {
         return <>
+
             {/* Logo + Title */}
             <div className="flex items-center space-x-4 mb-6 md:mb-0">
                 <img
@@ -34,7 +36,7 @@ export default function Header() {
             <div className="absolute top-4 right-4 dropdown dropdown-end px-6 py-11">
                 <div
                     className="dropdown dropdown-end"
-                    onClick={(e) => e.stopPropagation()} // Prevent click from closing outer things
+                    onClick={(e) => e.stopPropagation()}
                 >
                     {/* Main + Button */}
                     <button

@@ -336,7 +336,7 @@ export default function Form({
                         </>
                     )}
 
-                    <button className="btn btn-primary" type="submit">
+                    <button className="btn btn-success" type="submit">
                         Save
                     </button>
                 </form>
