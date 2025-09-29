@@ -4,11 +4,13 @@ import {useNavigate} from "react-router-dom";
 import {useMemo, useState} from "react";
 import DetermineSortArrow from "./structure/DetermineSortArrow.tsx";
 import Form from "./structure/Form.tsx";
+import {LibraryClient} from "../models/generated-client.ts";
+import {API_BASE_URL} from "../config/api.ts";
 
 
 
 export function Authors() {
-    const [getAuthors] = useAtom(AuthorAtom);
+    const [getAuthors, setAuthors] = useAtom(AuthorAtom);
     const [, setFilter] = useAtom(FilterAtom);
     const [sort, setSort] = useState<{ type: "author"; value: "asc" | "desc" }>({
         type: "author",
@@ -17,6 +19,7 @@ export function Authors() {
     const navigate = useNavigate();
     const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
     const [editingId, setEditingId] = useState<string | undefined>(undefined);
+    const client = new LibraryClient(API_BASE_URL);
 
 
     const sortedAuthors = useMemo(() => {
@@ -86,7 +89,21 @@ export function Authors() {
                         Edit
                     </button>
                     </th>
-                    <th>Delete</th>
+                    <th><button type="button"
+                                className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                                onClick={() => {
+                                    if (window.confirm(`Are you sure you want to delete "${a.name}"?`)) {
+                                        client.deleteAuthor(a.id)
+                                            .then(() => {
+                                                setFilter(null);
+                                                setAuthors(prev => prev.filter(aa => aa.id !== a.id));
+                                            })
+                                            .catch(console.error);
+                                    }
+                                }}>
+                        Delete
+                    </button>
+                    </th>
                 </tr>
             ))}
             </tbody>
