@@ -1,10 +1,14 @@
 import bookImage from "../../assets/books.png"
 import {useAtom} from "jotai";
 import {FilterAtom} from "../../Atom.ts";
+import {useState} from "react";
+import Form from "./Form.tsx";
 
 export default function Header() {
 
     const [filter, setFilter] = useAtom(FilterAtom);
+    const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
 
     function getTitle() {
@@ -27,26 +31,71 @@ export default function Header() {
         return <>
             {/* Menu */}
             <div className="absolute top-4 right-4 dropdown dropdown-end px-6 py-11">
-                <div className="dropdown dropdown-end">
-                    <label title="Add an item" tabIndex={0} className="btn btn-accent btn-circle btn-lg">
-                        +
-                    </label>
-                    <ul
-                        tabIndex={0}
-                        className="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-40 mt-2"
+                <div
+                    className="dropdown dropdown-end"
+                    onClick={(e) => e.stopPropagation()} // Prevent click from closing outer things
+                >
+                    {/* Main + Button */}
+                    <button
+                        type="button"
+                        title="Add an item"
+                        className="btn btn-accent btn-circle btn-lg text-xxl font-bold"
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
                     >
-                        <li className="py-1">
-                            Book
-                        </li>
-                        <li className="py-1">
-                            Author
-                        </li>
-                        <li className="py-1">
-                            Genre
-                        </li>
-                    </ul>
+                        +
+                    </button>
+
+                    {/* Dropdown Items */}
+                    {dropdownOpen && (
+                        <ul
+                            tabIndex={0}
+                            className="dropdown-content menu p-2 shadow bg-base-200 rounded-box w-40 mt-2"
+                        >
+                            <li className="py-1">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setForm("book");
+                                        setDropdownOpen(false); // close dropdown after selecting
+                                    }}
+                                >
+                                    Book
+                                </button>
+                            </li>
+                            <li className="py-1">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setForm("author");
+                                        setDropdownOpen(false);
+                                    }}
+                                >
+                                    Author
+                                </button>
+                            </li>
+                            <li className="py-1">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setForm("genre");
+                                        setDropdownOpen(false);
+                                    }}
+                                >
+                                    Genre
+                                </button>
+                            </li>
+                        </ul>
+                    )}
                 </div>
             </div>
+
+            {/* Slide-in Form */}
+            <Form
+                formType={openForm}
+                open={openForm !== null}
+                onClose={() => setForm(null)}
+            />
+
         </>;
     }
 
