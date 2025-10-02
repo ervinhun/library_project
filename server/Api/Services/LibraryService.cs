@@ -137,13 +137,14 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<AuthorResponseDto> AddAuthor(string authorName)
     {
-        Validator.ValidateObject(authorName, new ValidationContext(authorName), true);
         var author = new Author()
         {
             Id = Guid.NewGuid().ToString(),
             Name = authorName,
             Createdat = DateTime.Now.ToUniversalTime()
         };
+        Validator.ValidateObject(author, new ValidationContext(author), true);
+        
         await ctx.Authors.AddAsync(author);
         await ctx.SaveChangesAsync();
         return new AuthorResponseDto(author);
@@ -151,13 +152,14 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<GenreResponseDto> AddGenre(string genreName)
     {
-        Validator.ValidateObject(genreName, new ValidationContext(genreName), true);
         var genre = new Genre()
         {
             Id = Guid.NewGuid().ToString(),
             Name = genreName,
             Createdat = DateTime.Now.ToUniversalTime()
         };
+        Validator.ValidateObject(genre, new ValidationContext(genre), true);
+        
         await ctx.Genres.AddAsync(genre);
         await ctx.SaveChangesAsync();
         return new GenreResponseDto(genre);

@@ -1,6 +1,6 @@
 // Base URL of your backend
 export const API_BASE_URL_PROD =
-    "https://server-nameless-star-9223.fly.dev";
+    "https://server-nameless-star-9223.fly.dev/api/library";
 export const API_BASE_URL_DEV = "http://localhost:3000";
 
 // Endpoints
