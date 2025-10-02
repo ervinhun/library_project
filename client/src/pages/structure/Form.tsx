@@ -5,12 +5,15 @@ import type {Genre} from "../../models/Genre.ts";
 import type {Book} from "../../models/Book.ts";
 import type {Author} from "../../models/Author.ts";
 import {
+    ApiException,
     type AuthorRequestDto,
     type AuthorResponseDto,
     type GenreRequestDto,
     type GenreResponseDto
 } from "../../models/generated-client.ts";
 import {client} from "../../config/client.ts";
+import toast from "react-hot-toast";
+import type {ProblemDetails} from "../../ProblemDetails.ts";
 
 type SlideInFormProps = {
     formType: "book" | "author" | "genre" | null;
@@ -222,17 +225,34 @@ export default function Form({
             onClose();
 
         } catch (e) {
-            alert(`Error: ${(e as Error).message}`);
-        } finally {
-            setLoading(false);
+            if (e instanceof ApiException) {
+                try {
+                    const problemDetails = JSON.parse(e.response) as ProblemDetails;
+
+                    if (problemDetails.errors) {
+                        const firstKey = Object.keys(problemDetails.errors)[0];
+                        const firstError = problemDetails.errors[firstKey][0];
+                        toast.error(firstError);
+                    } else if (problemDetails.title) {
+                        toast.error(problemDetails.title);
+                    } else {
+                        toast.error("An unexpected error occurred.");
+                    }
+                } catch (parseError) {
+                    console.error("Failed to parse error response", parseError);
+                    toast.error("An unexpected error occurred.");
+                }
+            }
         }
+        setLoading(false);
     }
+
 
     if (!open) return null;
 
     return (
         <>
-            <button className="btn btn-primary" type="submit" disabled={loading}>
+            <button className="btn btn-primary" type="button" disabled={loading}>
                 {loading ? <span className="loading loading-spinner loading-sm"></span> : "Save"}
             </button>
 

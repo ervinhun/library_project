@@ -1,5 +1,5 @@
 import {NavLink} from "react-router-dom";
-import ThemeToggle from "../../config/ThemeTogle.tsx";
+import ThemeTooggle from "../../config/ThemeToogle.tsx";
 
 export default function Dock() {
     return (
@@ -40,7 +40,7 @@ export default function Dock() {
                      className="dock-icon size-[1.7em]"/>
                 <span className="dock-label text-accent">Genre</span>
             </NavLink>
-            <ThemeToggle />
+            <ThemeTooggle />
         </div>
     )
 }
