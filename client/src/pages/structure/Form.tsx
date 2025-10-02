@@ -244,7 +244,9 @@ export default function Form({
                 }
             }
         }
-        setLoading(false);
+        finally {
+            setLoading(false);
+        }
     }
 
 

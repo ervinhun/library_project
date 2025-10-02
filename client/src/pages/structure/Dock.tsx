@@ -1,5 +1,5 @@
 import {NavLink} from "react-router-dom";
-import ThemeTooggle from "../../config/ThemeToogle.tsx";
+import ThemeTooggle from "../../config/ThemeToggle.tsx";
 
 export default function Dock() {
     return (
