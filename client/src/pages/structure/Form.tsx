@@ -125,6 +125,14 @@ export default function Form({
                         };
 
                         setAuthors(prev => prev.map(a => a.id === updatedAuthor.id ? updatedAuthor : a));
+                        setBooks(prev =>
+                            prev.map(book => ({
+                                ...book,
+                                authors: book.authors.map(author =>
+                                    author.id === updatedAuthor.id ? { ...author, ...updatedAuthor } : author
+                                )
+                            }))
+                        );
 
                     }
                     break;
@@ -149,6 +157,15 @@ export default function Form({
                         };
 
                         setGenres(prev => prev.map(g => g.id === updatedGenre.id ? updatedGenre : g));
+                        setBooks(prev =>
+                            prev.map(book => ({
+                                ...book,
+                                genre:
+                                    book.genre.id === updatedGenre.id
+                                        ? { ...book.genre, ...updatedGenre }
+                                        : book.genre
+                            }))
+                        );
                     }
                     break;
                 }
@@ -228,7 +245,7 @@ export default function Form({
             if(e instanceof ApiException) {
                 console.log(JSON.stringify(e))
                 const problemDetails = JSON.parse(e.response) as ProblemDetails;
-                toast(problemDetails.title)
+                toast.error(problemDetails.title)
             }
         }
         finally {
