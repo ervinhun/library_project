@@ -125,6 +125,14 @@ export default function Form({
                         };
 
                         setAuthors(prev => prev.map(a => a.id === updatedAuthor.id ? updatedAuthor : a));
+                        setBooks(prev =>
+                            prev.map(book => ({
+                                ...book,
+                                authors: book.authors.map(author =>
+                                    author.id === updatedAuthor.id ? { ...author, ...updatedAuthor } : author
+                                )
+                            }))
+                        );
 
                     }
                     break;
@@ -149,6 +157,15 @@ export default function Form({
                         };
 
                         setGenres(prev => prev.map(g => g.id === updatedGenre.id ? updatedGenre : g));
+                        setBooks(prev =>
+                            prev.map(book => ({
+                                ...book,
+                                genre:
+                                    book.genre.id === updatedGenre.id
+                                        ? { ...book.genre, ...updatedGenre }
+                                        : book.genre
+                            }))
+                        );
                     }
                     break;
                 }
@@ -225,23 +242,10 @@ export default function Form({
             onClose();
 
         } catch (e) {
-            if (e instanceof ApiException) {
-                try {
-                    const problemDetails = JSON.parse(e.response) as ProblemDetails;
-
-                    if (problemDetails.errors) {
-                        const firstKey = Object.keys(problemDetails.errors)[0];
-                        const firstError = problemDetails.errors[firstKey][0];
-                        toast.error(firstError);
-                    } else if (problemDetails.title) {
-                        toast.error(problemDetails.title);
-                    } else {
-                        toast.error("An unexpected error occurred.");
-                    }
-                } catch (parseError) {
-                    console.error("Failed to parse error response", parseError);
-                    toast.error("An unexpected error occurred.");
-                }
+            if(e instanceof ApiException) {
+                console.log(JSON.stringify(e))
+                const problemDetails = JSON.parse(e.response) as ProblemDetails;
+                toast.error(problemDetails.title)
             }
         }
         finally {
@@ -253,12 +257,7 @@ export default function Form({
     if (!open) return null;
 
     return (
-        <>
-            <button className="btn btn-primary" type="button" disabled={loading}>
-                {loading ? <span className="loading loading-spinner loading-sm"></span> : "Save"}
-            </button>
-
-            <div className="fixed inset-0 bg-opacity-50 z-40" onClick={onClose}/>
+        <><div className="fixed inset-0 bg-opacity-50 z-40" onClick={onClose}/>
             <div
                 className="fixed top-0 right-0 h-full w-full md:w-1/3 bg-base-100 z-50 shadow-lg overflow-auto rounded-box p-2 border border-b-primary-content"
                 onClick={(e) => e.stopPropagation()}

@@ -206,8 +206,6 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<AuthorResponseDto> UpdateAuthor(string authorId, AuthorRequestDto authorResponseDto)
     {
-        if (authorId.Equals("1") || authorId.Equals("2"))
-            throw new ArgumentException("The first two authors (id 1 and 2) cannot be updated.");
         Validator.ValidateObject(authorResponseDto, new ValidationContext(authorResponseDto), true);
         var existingAuthor = await ctx.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
         if (existingAuthor == null)
@@ -232,8 +230,6 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<bool> DeleteBook(string bookId)
     {
-        if (bookId.Equals("1") || bookId.Equals("2"))
-            throw new ArgumentException(FirstTwoCannotBeDeleted("books"));
         var existingBook = await ctx.Books.FirstOrDefaultAsync(b => b.Id == bookId);
         if (existingBook == null)
             throw new KeyNotFoundException(CannotFind("book", bookId));
@@ -244,8 +240,6 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<bool> DeleteAuthor(string authorId)
     {
-        if (authorId.Equals("1") || authorId.Equals("2"))
-            throw new ArgumentException(FirstTwoCannotBeDeleted("authors"));
         var author = await ctx.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
         if (author == null)
             throw new KeyNotFoundException(CannotFind("author", authorId));
@@ -258,8 +252,6 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<bool> DeleteGenre(string genreId)
     {
-        if (genreId.Equals("1") || genreId.Equals("2"))
-            throw new ArgumentException(FirstTwoCannotBeDeleted("genres"));
         var genre = await ctx.Genres.FirstOrDefaultAsync(g => g.Id == genreId);
         if (genre == null)
             throw new KeyNotFoundException(CannotFind("genre", genreId));
@@ -278,11 +270,6 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
     private async Task<bool> CheckIfBookExistsWithAuthor(string authorId)
     {
         return await ctx.Books.AnyAsync(b => b.Authors.Any(a => a.Id == authorId));
-    }
-
-    private String FirstTwoCannotBeDeleted(String what)
-    {
-        return $"The first two {what} (id 1 and 2) cannot be deleted.";
     }
 
     private String CannotFind(String what, String id)

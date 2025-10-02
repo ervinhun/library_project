@@ -7,50 +7,6 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-export class AddSampleDataClient {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : window as any;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    addSampleDataOnce(): Promise<AuthorResponseDto[]> {
-        let url_ = this.baseUrl + "/AddSampleDataOnce";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processAddSampleDataOnce(_response);
-        });
-    }
-
-    protected processAddSampleDataOnce(response: Response): Promise<AuthorResponseDto[]> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as AuthorResponseDto[];
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<AuthorResponseDto[]>(null as any);
-    }
-}
-
 export class LibraryClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
@@ -62,7 +18,7 @@ export class LibraryClient {
     }
 
     getBookById(bookId: string | undefined): Promise<BookResponseDto> {
-        let url_ = this.baseUrl + "/GetBookById?";
+        let url_ = this.baseUrl + "/api/Library/GetBookById?";
         if (bookId === null)
             throw new globalThis.Error("The parameter 'bookId' cannot be null.");
         else if (bookId !== undefined)
@@ -99,7 +55,7 @@ export class LibraryClient {
     }
 
     getAuthorById(authorId: string | undefined): Promise<AuthorResponseDto> {
-        let url_ = this.baseUrl + "/GetAuthorById?";
+        let url_ = this.baseUrl + "/api/Library/GetAuthorById?";
         if (authorId === null)
             throw new globalThis.Error("The parameter 'authorId' cannot be null.");
         else if (authorId !== undefined)
@@ -136,7 +92,7 @@ export class LibraryClient {
     }
 
     getGenreById(genreId: string | undefined): Promise<GenreResponseDto> {
-        let url_ = this.baseUrl + "/GetGenreById?";
+        let url_ = this.baseUrl + "/api/Library/GetGenreById?";
         if (genreId === null)
             throw new globalThis.Error("The parameter 'genreId' cannot be null.");
         else if (genreId !== undefined)
@@ -173,7 +129,7 @@ export class LibraryClient {
     }
 
     getAllBooks(): Promise<BookResponseDto[]> {
-        let url_ = this.baseUrl + "/GetAllBooks";
+        let url_ = this.baseUrl + "/api/Library/GetAllBooks";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -206,7 +162,7 @@ export class LibraryClient {
     }
 
     getAllAuthors(): Promise<AuthorResponseDto[]> {
-        let url_ = this.baseUrl + "/GetAllAuthors";
+        let url_ = this.baseUrl + "/api/Library/GetAllAuthors";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -239,7 +195,7 @@ export class LibraryClient {
     }
 
     getAllGenres(): Promise<GenreResponseDto[]> {
-        let url_ = this.baseUrl + "/GetAllGenres";
+        let url_ = this.baseUrl + "/api/Library/GetAllGenres";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
@@ -272,7 +228,7 @@ export class LibraryClient {
     }
 
     getAllBooksByGenre(genreId: string | undefined): Promise<BookResponseDto[]> {
-        let url_ = this.baseUrl + "/GetAllBooksByGenre?";
+        let url_ = this.baseUrl + "/api/Library/GetAllBooksByGenre?";
         if (genreId === null)
             throw new globalThis.Error("The parameter 'genreId' cannot be null.");
         else if (genreId !== undefined)
@@ -309,7 +265,7 @@ export class LibraryClient {
     }
 
     getAllBooksByAuthor(authorId: string | undefined): Promise<BookResponseDto[]> {
-        let url_ = this.baseUrl + "/GetAllBooksByAuthor?";
+        let url_ = this.baseUrl + "/api/Library/GetAllBooksByAuthor?";
         if (authorId === null)
             throw new globalThis.Error("The parameter 'authorId' cannot be null.");
         else if (authorId !== undefined)
@@ -346,7 +302,7 @@ export class LibraryClient {
     }
 
     getAllBooksByTitle(title: string | undefined): Promise<BookResponseDto[]> {
-        let url_ = this.baseUrl + "/GetAllBooksByTitle?";
+        let url_ = this.baseUrl + "/api/Library/GetAllBooksByTitle?";
         if (title === null)
             throw new globalThis.Error("The parameter 'title' cannot be null.");
         else if (title !== undefined)
@@ -383,7 +339,7 @@ export class LibraryClient {
     }
 
     addBook(bookCreateRequestDto: BookCreateRequestDto): Promise<BookResponseDto> {
-        let url_ = this.baseUrl + "/AddBook";
+        let url_ = this.baseUrl + "/api/Library/AddBook";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(bookCreateRequestDto);
@@ -420,7 +376,7 @@ export class LibraryClient {
     }
 
     addAuthor(authorName: string): Promise<AuthorResponseDto> {
-        let url_ = this.baseUrl + "/AddAuthor";
+        let url_ = this.baseUrl + "/api/Library/AddAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(authorName);
@@ -457,7 +413,7 @@ export class LibraryClient {
     }
 
     addGenre(genreName: string): Promise<GenreResponseDto> {
-        let url_ = this.baseUrl + "/AddGenre";
+        let url_ = this.baseUrl + "/api/Library/AddGenre";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(genreName);
@@ -494,7 +450,7 @@ export class LibraryClient {
     }
 
     updateBook(bookResponseDto: BookUpdateRequestDto): Promise<BookResponseDto> {
-        let url_ = this.baseUrl + "/UpdateBook";
+        let url_ = this.baseUrl + "/api/Library/UpdateBook";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(bookResponseDto);
@@ -531,7 +487,7 @@ export class LibraryClient {
     }
 
     updateAuthor(authorResponseDto: AuthorRequestDto): Promise<AuthorResponseDto> {
-        let url_ = this.baseUrl + "/UpdateAuthor";
+        let url_ = this.baseUrl + "/api/Library/UpdateAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(authorResponseDto);
@@ -568,7 +524,7 @@ export class LibraryClient {
     }
 
     updateGenre(genreResponseDto: GenreRequestDto): Promise<GenreResponseDto> {
-        let url_ = this.baseUrl + "/UpdateGenre";
+        let url_ = this.baseUrl + "/api/Library/UpdateGenre";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(genreResponseDto);
@@ -605,7 +561,7 @@ export class LibraryClient {
     }
 
     deleteBook(bookId: string): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/DeleteBook";
+        let url_ = this.baseUrl + "/api/Library/DeleteBook";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(bookId);
@@ -647,7 +603,7 @@ export class LibraryClient {
     }
 
     deleteAuthor(authorId: string): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/DeleteAuthor";
+        let url_ = this.baseUrl + "/api/Library/DeleteAuthor";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(authorId);
@@ -689,7 +645,7 @@ export class LibraryClient {
     }
 
     deleteGenre(genreId: string): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/DeleteGenre";
+        let url_ = this.baseUrl + "/api/Library/DeleteGenre";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(genreId);
@@ -731,12 +687,6 @@ export class LibraryClient {
     }
 }
 
-export interface AuthorResponseDto {
-    id?: string;
-    name?: string;
-    createdat?: string | undefined;
-}
-
 export interface BookResponseDto {
     id?: string;
     title?: string;
@@ -748,6 +698,12 @@ export interface BookResponseDto {
 }
 
 export interface GenreResponseDto {
+    id?: string;
+    name?: string;
+    createdat?: string | undefined;
+}
+
+export interface AuthorResponseDto {
     id?: string;
     name?: string;
     createdat?: string | undefined;

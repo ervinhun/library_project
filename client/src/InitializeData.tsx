@@ -11,9 +11,9 @@ export default function InitializeData() {
 
     useEffect(() => {
         Promise.all([
-            fetch(API_ENDPOINTS.books).then((r) => r.json()),
-            fetch(API_ENDPOINTS.authors).then((r) => r.json()),
-            fetch(API_ENDPOINTS.genres).then((r) => r.json()),
+            fetch(API_ENDPOINTS.booksInitial).then((r) => r.json()),
+            fetch(API_ENDPOINTS.authorsInitial).then((r) => r.json()),
+            fetch(API_ENDPOINTS.genresInitial).then((r) => r.json()),
         ])
             .then(([books, authors, genres]) => {
                 setAllBooks(books);
