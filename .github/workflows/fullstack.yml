@@ -50,10 +50,12 @@ jobs:
 
       # 6. Run tests
       - name: Run tests
+
         run: |
           cd server
           dotnet build library_project.sln
           dotnet test tests/tests.csproj
+
 
       # 7. Publish API (optional)
       - name: Publish API
