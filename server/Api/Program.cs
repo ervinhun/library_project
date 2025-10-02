@@ -15,11 +15,11 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseCors("FrontendPolicy");
-        app.UseHttpsRedirection();
+        app.UseCors("DevPolicy");
+        app.UseOpenApi();
         app.UseSwaggerUi(config => { config.Path = String.Empty; });
-        app.UseAuthorization();
         app.MapControllers();
+        app.GenerateApiClientsFromOpenApi("/../../client/src/models/generated-client.ts").GetAwaiter().GetResult();
         app.Run();
 
     }
@@ -41,6 +41,14 @@ public class Program
                     .WithOrigins("http://localhost:5173", "https://client-quiet-surf-2481.fly.dev")
                     .AllowAnyHeader()
                     .AllowAnyMethod();
+            });
+            options.AddPolicy("DevPolicy", policy =>
+            {
+                policy
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()
+                    .SetIsOriginAllowed(x => true);
             });
         });
         services.AddSingleton<AppOptions>(provider =>

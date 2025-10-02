@@ -4,13 +4,17 @@ namespace Api.Dtos;
 
 public class GenreResponseDto
 {
-    public GenreResponseDto(){}
+    public GenreResponseDto()
+    {
+    }
+
     public GenreResponseDto(Genre genre)
     {
         Id = genre.Id;
         Name = genre.Name;
         Createdat = genre.Createdat;
     }
+
     public string Id { get; set; }
 
     public string Name { get; set; }

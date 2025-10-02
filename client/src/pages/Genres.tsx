@@ -37,7 +37,7 @@ export function Genres() {
     function getSort() {
         return <button
             type="button"
-            className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0 ml-10 font-bold text-xl"
+            className="cursor-pointer text-accent font-bold ml-13"
             onClick={() =>
                 setSort((prev) => ({
                     type: "genres",
@@ -60,14 +60,14 @@ export function Genres() {
             }}
         />
         {getSort()}
-        <table className="table table-zebra ml-10">
+        <table className="table table-zebra table-sm ml-10">
             <tbody>
             {sortedAuthors.map((a) => (
                 <tr key={a.id}>
                     <th className="text-left w-3/4">
                         <button
                             type="button"
-                            className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                            className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
                             onClick={() => {
                                 setFilter({type: "genre", id: a.id, value: a.name});
                                 navigate("/");
@@ -79,18 +79,18 @@ export function Genres() {
                     <th>
                         <button
                             type="button"
-                            className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                            className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                             onClick={() => {
                                 setForm("genre");
                                 setEditingId(a.id);
                             }}
                         >
-                            Edit
+                            ✎
                         </button>
                     </th>
                     <th>
                         <button type="button"
-                                className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                                 onClick={() => confirmAndDelete(
                                     client,
                                     a.id,
@@ -100,7 +100,7 @@ export function Genres() {
                                     undefined,
                                     setGenres
                                 )}>
-                            Delete
+                            🗑
                         </button>
                     </th>
                 </tr>

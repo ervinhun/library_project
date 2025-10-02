@@ -54,43 +54,43 @@ export default function Home() {
 
     return (
         <div className="overflow-x-auto">
-            <table className="table table-xs table-pin-rows table-pin-cols">
+            <table className="table table-sm table-pin-rows table-pin-cols ml-10 table-zebra">
                 <thead>
                 <tr>
                     <td
-                        className="cursor-pointer"
+                        className="cursor-pointer text-accent font-bold"
                         onClick={() =>
                             setSort((prev) => ({
                                 type: "title",
                                 value: prev.type === "title" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Title {sort.type === "title" ? <DetermineSortArrow /> : ""}</td>
+                        }>Title {sort.type === "title" ? <DetermineSortArrow/> : ""}</td>
                     <td
-                        className="cursor-pointer"
+                        className="cursor-pointer text-accent font-bold"
                         onClick={() =>
                             setSort((prev) => ({
                                 type: "author",
                                 value: prev.type === "author" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Author {sort.type === "author" ? <DetermineSortArrow /> : ""}
+                        }>Author {sort.type === "author" ? <DetermineSortArrow/> : ""}
                     </td>
                     <td
-                        className="cursor-pointer"
+                        className="cursor-pointer text-accent font-bold"
                         onClick={() =>
                             setSort((prev) => ({
                                 type: "pages",
                                 value: prev.type === "pages" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Pages {sort.type === "pages" ? <DetermineSortArrow /> : ""}
+                        }>Pages {sort.type === "pages" ? <DetermineSortArrow/> : ""}
                     </td>
                     <td
-                        className="cursor-pointer"
+                        className="cursor-pointer text-accent font-bold"
                         onClick={() =>
                             setSort((prev) => ({
                                 type: "genre",
                                 value: prev.type === "genre" && prev.value === "asc" ? "desc" : "asc",
                             }))
-                        }>Genre {sort.type === "genre" ? <DetermineSortArrow /> : ""}
+                        }>Genre {sort.type === "genre" ? <DetermineSortArrow/> : ""}
                     </td>
                     <th></th>
                 </tr>
@@ -105,10 +105,11 @@ export default function Home() {
                         <td>
                             <p>
                                 {b.authors?.length ? (
-                                    b.authors.map((a) => (
+                                    b.authors.map((a, idx) => (
+                                        <span key={idx} >
                                         <button
                                             key={a.id}
-                                            className="text-blue-100 hover:underline mr-1"
+                                            className="text-base-500 hover:underline mr-0 cursor-pointer"
                                             onClick={(e) => {
                                                 e.stopPropagation(); // prevent row navigation
                                                 setFilter({type: "author", id: a.id, value: a.name});   // set author filter
@@ -116,9 +117,13 @@ export default function Home() {
                                         >
                                             {a.name}
                                         </button>
+                                            {idx < b.authors.length - 1 && ", "}
+                                            </span>
                                     ))
                                 ) : (
-                                    "No authors"
+                                    <span className="italic text-base-500/40 cursor-default">
+                                    No authors
+                                    </span>
                                 )}
                             </p>
                         </td>
@@ -130,7 +135,7 @@ export default function Home() {
                         <td>
                             <p>
                                 <button
-                                    className="text-blue-100 hover:underline"
+                                    className="text-base-500 hover:underline cursor-pointer"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setFilter({type: "genre", id: b.genre.id, value: b.genre.name}); // set genre filter

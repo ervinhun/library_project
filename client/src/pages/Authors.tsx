@@ -35,7 +35,7 @@ export function Authors() {
     function getSort() {
         return <button
             type="button"
-            className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0 ml-10 font-bold text-xl"
+            className="cursor-pointer text-accent font-bold ml-13"
             onClick={() =>
                 setSort((prev) => ({
                     type: "author",
@@ -59,14 +59,14 @@ export function Authors() {
             }}
         />
         {getSort()}
-        <table className="table table-zebra ml-10">
+        <table className="table table-zebra table-sm ml-10">
             <tbody>
             {sortedAuthors.map((a) => (
                 <tr className="mt-4 space-y-2 ml-10" key={a.id}>
                     <th className="text-left w-3/4">
                         <button
                             type="button"
-                            className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                            className="text-base cursor-pointer hover:underline bg-transparent border-none p-0"
                             onClick={() => confirmAndDelete(
                                 client,
                                 a.id,
@@ -80,17 +80,17 @@ export function Authors() {
                     </th>
                     <th>
                         <button type="button"
-                                className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                                 onClick={() => {
                                     setForm("author");
                                     setEditingId(a.id);
                                 }}>
-                            Edit
+                            ✎
                         </button>
                     </th>
                     <th>
                         <button type="button"
-                                className="text-grey-100 cursor-pointer hover:underline bg-transparent border-none p-0"
+                                className="text-base cursor-pointer bg-transparent border-none p-0 text-xl"
                                 onClick={() => confirmAndDelete(
                                     client,
                                     a.id,
@@ -99,7 +99,7 @@ export function Authors() {
                                     setFilter,
                                     setAuthors
                                 )}>
-                            Delete
+                            🗑
                         </button>
                     </th>
                 </tr>

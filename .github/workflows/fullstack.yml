@@ -50,7 +50,12 @@ jobs:
 
       # 6. Run tests
       - name: Run tests
-        run: dotnet test server/library_project.sln --verbosity normal
+
+        run: |
+          cd server
+          dotnet build library_project.sln
+          dotnet test tests/tests.csproj
+
 
       # 7. Publish API (optional)
       - name: Publish API

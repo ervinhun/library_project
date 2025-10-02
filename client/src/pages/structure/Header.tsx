@@ -3,16 +3,19 @@ import {useAtom} from "jotai";
 import {FilterAtom} from "../../Atom.ts";
 import {useState} from "react";
 import Form from "./Form.tsx";
+import {useLocation} from "react-router-dom";
 
 export default function Header() {
 
     const [filter, setFilter] = useAtom(FilterAtom);
     const [openForm, setForm] = useState<"book" | "author" | "genre" | null>(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const location = useLocation();
 
 
     function getTitle() {
         return <>
+
             {/* Logo + Title */}
             <div className="flex items-center space-x-4 mb-6 md:mb-0">
                 <img
@@ -21,7 +24,7 @@ export default function Header() {
                     className="w-16 h-16 object-cover"
                 />
                 <h1 className="text-4xl md:text-6xl font-bold text-default-400">
-                    Library - Ervin
+                    e-Library
                 </h1>
             </div>
         </>;
@@ -33,7 +36,7 @@ export default function Header() {
             <div className="absolute top-4 right-4 dropdown dropdown-end px-6 py-11">
                 <div
                     className="dropdown dropdown-end"
-                    onClick={(e) => e.stopPropagation()} // Prevent click from closing outer things
+                    onClick={(e) => e.stopPropagation()}
                 >
                     {/* Main + Button */}
                     <button
@@ -100,16 +103,19 @@ export default function Header() {
     }
 
     function getFilterIndication() {
+
+        if (location.pathname !== "/") { return null; }
+
         return <>
             {filter && (
                 <code className="p-2 rounded-md">
                     <div className="flex items-center space-x-2 mt-2 text-sm bg-accent-content px-2 py-1">
-                            <span className=" text-gray-100 rounded">
+                            <span className=" text-accent rounded">
                               {filter.type === "author" ? "Author: " : "Genre: "}
                                 {filter.value}
                             </span>
                         <button
-                            className="text-red-500 font-bold"
+                            className="text-red-500 font-bold cursor-pointer"
                             onClick={() => setFilter(null)}
                         >
                             ×
