@@ -1,13 +1,14 @@
-name: FullStack Ci
+name: FullStack CI
 
 on:
-    pull_request:
-        paths:
-        - 'server/**'
-        - 'client/**'
-    push:
-        branches:
-        - main
+  pull_request:
+    paths:
+      - 'server/**'
+      - 'client/**'
+  push:
+    branches:
+      - main
+
 jobs:
   backend:
     name: Backend CI
@@ -28,9 +29,9 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore server/library_project.sln
 
-      # 4. Build solution
+      # 4. Build solution (Debug, no tests)
       - name: Build solution
-        run: dotnet build server/library_project.sln --configuration Release --no-restore
+        run: dotnet build server/library_project.sln --configuration Debug --no-restore
 
       # 5. Generate appsettings.json from GitHub Secret
       - name: Generate appsettings.json
@@ -48,15 +49,11 @@ jobs:
           }
           EOF
 
-      # 6. Run tests
+      # 6. Run tests (Debug mode)
       - name: Run tests
+        run: dotnet test server/tests/tests.csproj --configuration Debug --no-build --logger "trx;LogFileName=test_results.trx"
 
-        run: |
-          cd server/tests
-          dotnet test
-
-
-      # 7. Publish API (optional)
+      # 7. Publish API (Release mode, optimized for deployment)
       - name: Publish API
         run: dotnet publish server/Api/Api.csproj -c Release -o ./publish
 
@@ -65,8 +62,6 @@ jobs:
         working-directory: server
         run: docker build -t library-api-backend/server .
 
-
-        
   frontend:
     name: Frontend CI
     runs-on: ubuntu-latest
@@ -97,7 +92,7 @@ jobs:
         working-directory: client
         run: npm run build
 
-      # 6. Run frontend tests
-      #- name: Run tests
-      #  working-directory: client
-      #  run: npm test
+      # 6. Run frontend tests (optional, uncomment if needed)
+      # - name: Run tests
+      #   working-directory: client
+      #   run: npm test
