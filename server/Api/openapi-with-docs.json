@@ -574,7 +574,7 @@
             "type": "integer",
             "format": "int32",
             "maximum": 2147483647.0,
-            "minimum": 49.0
+            "minimum": 1.0
           },
           "createdat": {
             "type": "string",
@@ -648,7 +648,7 @@
             "type": "integer",
             "format": "int32",
             "maximum": 2147483647.0,
-            "minimum": 49.0
+            "minimum": 1.0
           },
           "genreid": {
             "type": "string",
