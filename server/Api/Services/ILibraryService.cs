@@ -1,5 +1,4 @@
 ﻿using Api.Dtos;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Services;
 

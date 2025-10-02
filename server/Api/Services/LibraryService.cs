@@ -121,6 +121,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<BookResponseDto> AddBook(BookCreateRequestDto bookResponseDto)
     {
+        Validator.ValidateObject(bookResponseDto, new ValidationContext(bookResponseDto), true);
         var newBook = new Book
         {
             Id = Guid.NewGuid().ToString(),
@@ -131,11 +132,12 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
         };
         ctx.Books.Add(newBook);
         var result = await ctx.SaveChangesAsync();
-        return new BookResponseDto(newBook);
+        return result == 0 ? throw new InvalidOperationException("Could not add book") : new BookResponseDto(newBook);
     }
 
     public async Task<AuthorResponseDto> AddAuthor(string authorName)
     {
+        Validator.ValidateObject(authorName, new ValidationContext(authorName), true);
         var author = new Author()
         {
             Id = Guid.NewGuid().ToString(),
@@ -149,6 +151,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<GenreResponseDto> AddGenre(string genreName)
     {
+        Validator.ValidateObject(genreName, new ValidationContext(genreName), true);
         var genre = new Genre()
         {
             Id = Guid.NewGuid().ToString(),
@@ -162,6 +165,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     public async Task<BookResponseDto> UpdateBook(string bookId, BookUpdateRequestDto bookResponseDto)
     {
+        Validator.ValidateObject(bookResponseDto, new ValidationContext(bookResponseDto), true);
         var existingBook = await ctx.Books
             .Include(b => b.Authors) // Make sure authors are loaded
             .FirstOrDefaultAsync(b => b.Id == bookId);
@@ -208,7 +212,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
             throw new KeyNotFoundException("Could not find author with id: " + authorId + "");
         existingAuthor.Name = authorResponseDto.Name;
         var result = await ctx.SaveChangesAsync();
-        return new AuthorResponseDto(existingAuthor);
+        return result == 0 ? throw new InvalidOperationException("Could not update author with id: " + authorId + "") : new AuthorResponseDto(existingAuthor);
     }
 
     public async Task<GenreResponseDto> UpdateGenre(string genreId, GenreRequestDto genreResponseDto)
@@ -266,7 +270,7 @@ public class LibraryService(MyDbContext ctx) : ILibraryService
 
     private async Task<bool> CheckIfBookExistsWithGenre(string genreId)
     {
-        return await ctx.Books.AnyAsync(b => b.Genre.Id == genreId);
+        return await ctx.Books.AnyAsync(b => b.Genre != null && b.Genre.Id == genreId);
     }
     
     private async Task<bool> CheckIfBookExistsWithAuthor(string authorId)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace dataaccess;
+﻿namespace dataaccess;
 
 public partial class Author
 {

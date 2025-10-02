@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controller;
 
+[ApiController]
+[Route("api/[controller]")]
 public class LibraryController : ControllerBase
 {
     private readonly ILibraryService _service;
@@ -77,6 +79,11 @@ public class LibraryController : ControllerBase
     [HttpPost(nameof(AddBook))]
     public async Task<ActionResult<BookResponseDto>> AddBook([FromBody] BookCreateRequestDto bookCreateRequestDto)
     {
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return BadRequest(errors);
+        }
         if(bookCreateRequestDto == null)
             throw new ArgumentNullException(nameof(bookCreateRequestDto));
         try
@@ -101,8 +108,8 @@ public class LibraryController : ControllerBase
             throw new ArgumentNullException(nameof(authorName));
         try
         {
-            var genre = await _service.AddAuthor(authorName );
-            return Ok(genre);
+            var author = await _service.AddAuthor(authorName );
+            return Ok(author);
         }
         catch (InvalidOperationException ex)
         {
@@ -144,7 +151,7 @@ public class LibraryController : ControllerBase
         try
         {
             bookResponseDto.Authors ??= new List<AuthorResponseDto>();
-            await _service.UpdateBook(bookResponseDto.Id, bookResponseDto);
+            var result = await _service.UpdateBook(bookResponseDto.Id, bookResponseDto);
             return Ok();
         }
         catch (KeyNotFoundException ex)

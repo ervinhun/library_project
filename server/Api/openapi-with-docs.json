@@ -7,30 +7,7 @@
     "version": "v1.0.0"
   },
   "paths": {
-    "/AddSampleDataOnce": {
-      "post": {
-        "tags": [
-          "AddSampleData"
-        ],
-        "operationId": "AddSampleData_AddSampleDataOnce",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AuthorResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/GetBookById": {
+    "/api/Library/GetBookById": {
       "get": {
         "tags": [
           "Library"
@@ -60,7 +37,7 @@
         }
       }
     },
-    "/GetAuthorById": {
+    "/api/Library/GetAuthorById": {
       "get": {
         "tags": [
           "Library"
@@ -90,7 +67,7 @@
         }
       }
     },
-    "/GetGenreById": {
+    "/api/Library/GetGenreById": {
       "get": {
         "tags": [
           "Library"
@@ -120,7 +97,7 @@
         }
       }
     },
-    "/GetAllBooks": {
+    "/api/Library/GetAllBooks": {
       "get": {
         "tags": [
           "Library"
@@ -143,7 +120,7 @@
         }
       }
     },
-    "/GetAllAuthors": {
+    "/api/Library/GetAllAuthors": {
       "get": {
         "tags": [
           "Library"
@@ -166,7 +143,7 @@
         }
       }
     },
-    "/GetAllGenres": {
+    "/api/Library/GetAllGenres": {
       "get": {
         "tags": [
           "Library"
@@ -189,7 +166,7 @@
         }
       }
     },
-    "/GetAllBooksByGenre": {
+    "/api/Library/GetAllBooksByGenre": {
       "get": {
         "tags": [
           "Library"
@@ -222,7 +199,7 @@
         }
       }
     },
-    "/GetAllBooksByAuthor": {
+    "/api/Library/GetAllBooksByAuthor": {
       "get": {
         "tags": [
           "Library"
@@ -255,7 +232,7 @@
         }
       }
     },
-    "/GetAllBooksByTitle": {
+    "/api/Library/GetAllBooksByTitle": {
       "get": {
         "tags": [
           "Library"
@@ -288,7 +265,7 @@
         }
       }
     },
-    "/AddBook": {
+    "/api/Library/AddBook": {
       "post": {
         "tags": [
           "Library"
@@ -320,7 +297,7 @@
         }
       }
     },
-    "/AddAuthor": {
+    "/api/Library/AddAuthor": {
       "post": {
         "tags": [
           "Library"
@@ -352,7 +329,7 @@
         }
       }
     },
-    "/AddGenre": {
+    "/api/Library/AddGenre": {
       "post": {
         "tags": [
           "Library"
@@ -384,7 +361,7 @@
         }
       }
     },
-    "/UpdateBook": {
+    "/api/Library/UpdateBook": {
       "put": {
         "tags": [
           "Library"
@@ -416,7 +393,7 @@
         }
       }
     },
-    "/UpdateAuthor": {
+    "/api/Library/UpdateAuthor": {
       "put": {
         "tags": [
           "Library"
@@ -448,7 +425,7 @@
         }
       }
     },
-    "/UpdateGenre": {
+    "/api/Library/UpdateGenre": {
       "put": {
         "tags": [
           "Library"
@@ -480,7 +457,7 @@
         }
       }
     },
-    "/DeleteBook": {
+    "/api/Library/DeleteBook": {
       "delete": {
         "tags": [
           "Library"
@@ -513,7 +490,7 @@
         }
       }
     },
-    "/DeleteAuthor": {
+    "/api/Library/DeleteAuthor": {
       "delete": {
         "tags": [
           "Library"
@@ -546,7 +523,7 @@
         }
       }
     },
-    "/DeleteGenre": {
+    "/api/Library/DeleteGenre": {
       "delete": {
         "tags": [
           "Library"
@@ -582,24 +559,6 @@
   },
   "components": {
     "schemas": {
-      "AuthorResponseDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "minLength": 3
-          },
-          "createdat": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        }
-      },
       "BookResponseDto": {
         "type": "object",
         "additionalProperties": false,
@@ -659,6 +618,24 @@
           }
         }
       },
+      "AuthorResponseDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3
+          },
+          "createdat": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
       "BookCreateRequestDto": {
         "type": "object",
         "additionalProperties": false,
@@ -694,7 +671,7 @@
             "type": "integer",
             "format": "int32",
             "maximum": 2147483647.0,
-            "minimum": 49.0
+            "minimum": 1.0
           },
           "genreid": {
             "type": "string",
