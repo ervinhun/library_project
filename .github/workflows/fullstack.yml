@@ -1,4 +1,4 @@
-﻿name: FullStack Ci
+name: FullStack Ci
 
 on:
     pull_request:
@@ -52,9 +52,8 @@ jobs:
       - name: Run tests
 
         run: |
-          cd server
-          dotnet build library_project.sln
-          dotnet test tests/tests.csproj
+          cd server/tests
+          dotnet test
 
 
       # 7. Publish API (optional)
